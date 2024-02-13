@@ -311,13 +311,18 @@
                              <span aria-hidden="true">&times;</span></button>
                             <div class="cf2-wrap">
                                 <h2>Login to ChainVault</h2>
-                                <h4>ERRORRRR</h4>
                                 <div class="clearfix space40"></div>
-                                <form class="positioned" name="sentMessage" id="contactForm" action="php/contact.php" method="post">
-                                    <input name="email" id="email" placeholder="Enter your email" required type="email">
+                                <form class="positioned" action="{% url 'login' %}" method="post">
 
-                                    <input name="password" id="password" placeholder="Enter your password" required type="password">
-
+                                    <div class="input_box">
+                                        <input type="email" name="email" placeholder="Enter your email" required />
+                                        <i class="uil uil-envelope-alt email"></i>
+                                    </div>
+                                    <div class="input_box">
+                                        <input type="password" name="password" placeholder="Enter your password" required />
+                                        <i class="uil uil-lock password"></i>
+                                        <i class="uil uil-eye-slash pw_hide"></i>
+                                    </div>
                                     
                                     <div class="option_field">
                                         <span class="checkbox">
@@ -330,7 +335,7 @@
                                 
                                     <button type="submit" class="btn btn-primary btn-ico">Login Now</button>
                                     <div style="font-size: 15px;" class="login_signup">Don't have an account? <a class="siignup">Signup</a></div>
-                                        </form>
+                                </form>
                                     <div class="login_signup">
                                     <p>OR</p><br>
                                     <form action="" method="post">
@@ -372,26 +377,28 @@
                             <div class="cf2-wrap">
                                 <h2>Signup to ChainVault</h2>
                                 <div class="clearfix space40"></div>
-                                <form class="positioned" name="sentMessage" id="contactForm" action="php/contact.php" method="post">
+                                <form class="positioned" action={% url 'signup' %}" method="post">
+
                                     <div class="input_box">
                                         <input type="text" name="name" placeholder="Enter username" required />
                                         <i class="uil uil-user email"></i>
-                                    </div>
-                                    <div class="input_box">
+                                      </div>
+                                      <div class="input_box">
                                         <input type="email" name="email" placeholder="Enter your email" required />
                                         <i class="uil uil-envelope-alt email"></i>
-                                    </div>
-                                    <div class="input_box">
+                                      </div>
+                                      <div class="input_box">
                                         <input type="password" name="password" id="password" placeholder="Create password" required />
                                         <i class="uil uil-lock password"></i>
                                         <i class="uil uil-eye-slash pw_hide"></i>
-                                    </div>
-                                    <div class="input_box">
+                                      </div>
+                                      <div class="input_box">
                                         <input type="password" id="password1" placeholder="Confirm password" required />
                                         <i class="uil uil-lock password"></i>
                                         <i class="uil uil-eye-slash pw_hide"></i>
                                     </div>
                                     
+                                    <br><br>
                                 
                                     <button type="submit" class="btn btn-primary btn-ico">SignUp Now</button>
                                     <div style="font-size: 15px;" class="login_signup">Already have an account? <a  class="loogin">Login</a></div>
