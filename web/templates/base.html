@@ -1,13 +1,43 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Home Page</title>
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    </head>
 
-    <body>
-        {% block content%}
-        {% endblock %}
-    </body>
+<head>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <title>ChainVault</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.html' %}">
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="{% static 'css/ilmosys-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/icons/fontawesome/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/icons/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/icons/icon2/style.css' %}">
+    <link rel="stylesheet" href="{% static 'js/vendors/swipebox/css/swipebox.min.css' %}">
+
+
+    <!-- THEME / PLUGIN CSS -->
+    <link rel="stylesheet" href="{% static 'js/vendors/slick/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body id="home">
+    {% block body %}
+
+    {% endblock %}
+   
+</body>
+
 </html>
