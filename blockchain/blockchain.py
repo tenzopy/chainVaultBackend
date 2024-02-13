@@ -5,17 +5,11 @@ import json as _json
 
 class Blockchain:
 
-    def __init__(self,block_list: list) -> None:
-        self.chain  = block_list
+    def __init__(self) -> None:
+        self.chain  = list()
         self.difficulty = 4
         genesis_block = self._create_block(
             index = 1,
-            owner = "Genesis Block",
-            shared = "Genesis Block",
-            receiver = "Genesis Block",
-            unencrypted_file_checksum = "Genesis Block",
-            encrypted_file_checksum = "Genesis Block",
-            ipfs_cid = "Genesis Block",
             merkle_hash= "Genesis Block",
             proof = 1,
             previous_hash = "0",
@@ -23,20 +17,13 @@ class Blockchain:
         self.chain.append(genesis_block)
 
     def mine_block(self,data: dict) -> dict:
-        owner, shared,receiver, unencrypted_file_checksum, encrypted_file_checksum, ipfs_cid, merkle_hash = data["owner"],data["shared"],data["receiver"],data["unencrypted_file_checksum"],data["encrypted_file_checksum"],data["ipfs_cid"],data["merkle_hash"]
-        data = self._hash(block=data)
+        merkle_hash = data["merkle_hash"]
         previous_block = self.get_previous_block()
         previous_proof = previous_block["proof"]
         index = len(self.chain) + 1
-        proof = self._proof_of_work(previous_proof=previous_proof, index=index, data=data, difficulty=self.difficulty)
+        proof = self._proof_of_work(previous_proof=previous_proof, index=index, data=merkle_hash, difficulty=self.difficulty)
         previous_hash =  self._hash(block=previous_block)
         block = self._create_block(
-            owner=owner,
-            shared=shared,
-            receiver=receiver,
-            unencrypted_file_checksum=unencrypted_file_checksum,
-            encrypted_file_checksum=encrypted_file_checksum,
-            ipfs_cid=ipfs_cid,
             merkle_hash=merkle_hash,
             proof=proof,
             previous_hash=previous_hash,
@@ -73,17 +60,11 @@ class Blockchain:
     def get_previous_block(self) -> dict:
         return self.chain[-1]
 
-    def _create_block(self, owner: str, shared: bool, receiver: str, unencrypted_file_checksum: str, encrypted_file_checksum: str, ipfs_cid: str, merkle_hash: str, proof: int, previous_hash: str, index: int) -> dict:
+    def _create_block(self, merkle_hash: str, proof: int, previous_hash: str, index: int) -> dict:
         block = {
             "index": index,
             "timestamp": str(_dt.datetime.now()),
-            "owner": owner,
-            "shared": shared,
-            "receiver": receiver,
-            "unencrypted_file_checksum": unencrypted_file_checksum,
-            "encrypted_file_checksum": encrypted_file_checksum,
             "merkle_hash": merkle_hash,
-            "ipfs_cid": ipfs_cid,
             "proof": proof,
             "previous_hash": previous_hash,
         }
@@ -101,23 +82,13 @@ class Blockchain:
                 return False
             
             current_proof = current_block["proof"]
-            next_index,next_proof = next_block["index"],next_block["proof"]
-            next_data = {
-                "owner": next_block["owner"],
-                "shared": next_block["shared"],
-                "receiver": next_block["receiver"],
-                "unencrypted_file_checksum": next_block["unencrypted_file_checksum"],
-                "encrypted_file_checksum": next_block["encrypted_file_checksum"],
-                "ipfs_cid": next_block["ipfs_cid"],
-                "merkle_hash": next_block["merkle_hash"],
-            }
-            next_data = self._hash(block=next_data)
+            next_index,next_proof,next_merkle_hash = next_block["index"],next_block["proof"],next_block["merkle_hash"]
             hash_value = _hashlib.sha256(
                 self._to_digest(
                     new_proof=next_proof,
                     previous_proof=current_proof, 
                     index=next_index,
-                    data=next_data
+                    data=next_merkle_hash
                 )
             ).hexdigest()
             
