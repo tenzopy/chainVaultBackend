@@ -2,6 +2,15 @@ from django.shortcuts import render,HttpResponse
 
 from blockchain.views import blockchain
 
+from hash_table.views import dhtnode
+
+
 
 def dash(request):
-    return HttpResponse(request.user.email)
+    
+    blockchain.update_nodes()
+    print(blockchain.nodes)
+    
+    print(blockchain.replace_chain())
+
+    return HttpResponse("hey")
