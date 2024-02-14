@@ -2,6 +2,7 @@ import datetime as _dt
 import hashlib as _hashlib
 import json as _json
 import requests
+from requests.adapters import HTTPAdapter
 import os
 from dotenv import find_dotenv,load_dotenv
 
@@ -119,7 +120,10 @@ class Blockchain:
         longest_chain = None
         max_length = len(self.chain)
         for node in network:
-            response = requests.get(f'http://{node}:8000/blockchain/get/')
+            try:
+                response = requests.get(f'http://{node}:8000/blockchain/get/')
+            except:
+                print(f"{node} is unavailable")
             if response.status_code == 200:
                 chain = response.json()
                 length = len(chain)
