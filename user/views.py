@@ -36,7 +36,7 @@ def signup(request):
             error_message = {
                 'error' : 'Account already exists !'
             }
-            return render(request,'login.html',error_message)
+            return render(request,'login_messages.html',error_message)
         else:
             user = User.objects.create_user(first_name=name,email=email,password=password)
             user.is_active = False
@@ -48,7 +48,7 @@ def signup(request):
 
             Subject = "Welcome to Sliceit URL Shortener, Confirm Your E-Mail."
             current_site = get_current_site(request)
-            HTML_Message = render_to_string('users/email_confirmation.html', {
+            HTML_Message = render_to_string('email_confirmation.html', {
 
             'name': user.name,
             'domain': current_site.domain,
@@ -56,7 +56,7 @@ def signup(request):
             'token': token
 
             })
-            Plain_Message = render_to_string('users/email_confirmation_plain.html', {
+            Plain_Message = render_to_string('email_confirmation_plain.html', {
 
             'name': user.name,
             'domain': current_site.domain,
@@ -67,7 +67,11 @@ def signup(request):
 
             send_mail(Subject, Plain_Message, from_email=None, recipient_list=[user.email], html_message=HTML_Message, fail_silently=True)
 
-            return render(request,'users/confirm_email_page.html')
+            message = {
+                'msg' : 'Your account has been created successfully! Please check your email to confirm your email address and activate your account.'
+            }
+
+            return render(request,'login_messages.html',message)
 
     return redirect(reverse('login'))
 
@@ -82,9 +86,15 @@ def activate(request, uidb64, token, backend='django.contrib.auth.backends.Model
         user.is_active = True
         user.save()
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return render(request,'users/confirm_email_success.html')
+        message = {
+                'msg' : 'Your account has been activated!'
+            }
+        return render(request,'login_messages.html',message)
     else:
-        return render(request, 'users/confirm_email_failed.html')
+        message = {
+                'msg' : 'Account Activation Failed/Expired.'
+            }
+        return render(request, 'login_messages.html',message)
     
 
 def signin(request):
@@ -96,7 +106,7 @@ def signin(request):
             error_message = {
                 'error' : 'Invalid Email'
             }
-            return render(request,'login.html',error_message)
+            return render(request,'login_messages.html',error_message)
         elif len(password)<8 or len(password)>15 :
             error_message = {
                 'error' : 'Invalid Password'
@@ -110,16 +120,16 @@ def signin(request):
                     request.session.set_expiry(604800)
                 else:
                     request.session.set_expiry(0)
-                return redirect(reverse('profile'))
+                return redirect(reverse('dashboard'))
         else:
             error_message = {
                 'error' : 'Incorrect Email or Password !'
             }
-            return render(request,'login.html',error_message)
+            return render(request,'login_messages.html',error_message)
     error_message = {
             'error' : ''
         }
-    return render(request,'login.html',error_message)
+    return render(request,'login_messages.html',error_message)
     
 def signout(request):
     logout(request)

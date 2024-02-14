@@ -1,0 +1,471 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+
+<div class="body">
+    <!-- HEADER -->
+    <header>
+        <nav class="navbar-inverse navbar-lg navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="index.html" class="navbar-brand brand"><img src="{% static 'images/logo.png' %}" alt="logo"></a>
+                </div>
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right navbar-login">
+                        <li>
+                            <a href="" data-toggle="modal" data-target="#modalContactForm" id="loginModal">Login </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+
+
+                        <li class="dropdown">
+                        <a href="index.html">Home</a>
+                        
+                        </li>
+
+                        <li class="dropdown mm-menu">
+                            <a class="page-scroll" href="#about">About</a>
+                        </li>
+
+                        <li class="dropdown mm-menu">
+                            <a class="page-scroll" href="#feature">Features</a>
+                        </li>
+
+                        <li class="dropdown mm-menu">
+                            <a class="page-scroll" href="#faq">FAQ</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Header -->
+    <div class="intro intro1">
+        <div class="container">
+            <div class="row center-content">
+                <div class="col-md-6">
+                    <h2>Let's Keep Your Data Safe</h2>
+                    <p>With ChainVault you can store and share your files ensuring security and privacy of your data using Blockchain technology.</p>
+                    <div class="space30"></div>
+                    <a href="" class="swipebox-video btn btn-lg btn-ylw">Get Started</a>
+                </div>
+                <br><br>
+                <div class="col-sm-4 col-md-7">
+                    <img src="{% static 'images/home_image.png' %}" class="img-responsive" alt="" />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ABOUT -->
+    <div id="about" class="container">
+        <div class="space100"></div>
+        <!-- INFO CONTENT -->
+        <div class="info-content">
+            <div class="container">
+                <div class="row center-content">
+                    <div class="col-md-6">
+                        <h3>About Us</h3>
+                        <img src="{% static 'images/line.png' %}" class="img-responsive" alt="" /><br>
+                        <p>Welcome to ChainVault, where we redefine file-sharing through blockchain innovation. Our mission is to provide a secure, user-friendly experience by leveraging decentralized storage and advanced encryption. With a commitment to privacy, ChainVault employs blockchain protocols to ensure tamper-proof and exclusively authorized access to your files. Our user-centric design offers simplicity without compromising functionality, making file management seamless.
+                            Whether you're an individual prioritizing privacy or a business seeking secure file sharing, ChainVault is your trusted solution. Join us in experiencing the future of decentralized, secure file management, where your data's integrity is preserved.
+                        </p>
+                        <div class="space30"></div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <img src="{% static 'images/aboutUs.jpg' %}" class="pull-right img-responsive" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br>
+    </div>
+    <div class="space100"></div>
+
+    <!-- SERVICES -->
+    <section id="feature" class="services bg-light">
+        <div class="container">
+            <div class="about-inline text-center">
+                <h3>Features of ChainVault </h3>
+                <img src="{% static 'images/line.png' %}" class="img-responsive center-block" alt="" />
+                <p>Features and services provided by ChainVault.</p>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <!-- Column -->
+                    <div class="col-md-6 cv-feature">
+                        <div class="box-body d-flex">
+                            <div class="feature-icon"><img src="{% static 'images/icon1.png' %}" width="65px" height="65px"></div>
+                            <div class="cv-feature">
+                                <a href="#">
+                                    <h3>Secure Data Storage</h3>
+                                </a>
+                                <p>The use of Blockchain technology enables secure, encrypted and tamper proof file storage system</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- Column -->
+                        <div class="col-md-6 cv-feature">
+                            <div class="box-body d-flex">
+                                <div class="feature-icon"><img src="{% static 'images/icon2.png' %}" width="65px" height="65px"></div>
+                                <div class="cv-feature">
+                                    <a href="#">
+                                        <h3>Safe and secure file sharing</h3>
+                                    </a>
+                                    <p>Enables tamper proof and secure file sharing.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- Column -->
+                            <div class="col-md-6 cv-feature">
+                                <div class="box-body d-flex">
+                                    <div class="feature-icon"><img src="{% static 'images/icon3.png' %}" width="65px" height="65px"></div>
+                                    <div class="cv-feature">
+                                        <a href="#">
+                                            <h3>Uses secure encyption technology</h3>
+                                        </a>
+                                        <p>Uses AES encryption mechanisms to share and storing files using IPFS and Blockchain.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <!-- Column -->
+                                <div class="col-md-6 cv-feature">
+                                    <div class="box-body d-flex">
+                                        <div class="feature-icon"><img src="{% static 'images/icon4.png' %}" width="65px" height="65px"></i></div>
+                                        <div class="cv-feature">
+                                        <a href="#">
+                                        <h3>User Friendly</h3>
+                                        </a>
+                                        <p class="m-t-20">Provides user friendly environment and ease of use.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- benifits 1 -->
+    <div class="intro intro-why">
+
+        <div class="row center-content">
+            
+            <div class="col-md-6">
+                <img src="{% static 'images/whyCV.png' %}" class="img-responsive" alt="" />
+            </div>
+
+            <div class="container">
+                <div class="col-md-9 why col-md-push-1">
+                    <h3 style="font-size: 50px;">Why ChainVault?</h3> 
+                    <img src="{% static 'images/line.png' %}" class="img-responsive" alt="" /><br />
+                    <p>ChainVault provides an efficient method to store and retrieve files in a safe and secure way. By leveraging blockchain technology and IPFS, it mitigates risks associated with centralized systems, such as data breaches and single points of failure.</p>
+                    <br />
+                    <ul class="list">
+                        <li><i class="icon-check"></i> Password Protected</li>
+                        <li><i class="icon-check"></i> Highly Secured</li>
+                        <li><i class="icon-check"></i> Super Fast Speed</li>
+                        <li><i class="icon-check"></i> Tamper Proof</li>
+                        <li><i class="icon-check"></i> User Friendly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        <!-- FAQ -->
+        <div id="faq" class="bg-light">
+            <div class="container">
+                <div class="about-inline text-center">
+                    <h3>Got questions?</h3>
+                    <img src="" class="img-responsive center-block" alt="" />
+                    <p>Welcome to our FAQ section, where we've compiled answers to the most commonly asked questions about our product and services. If you can't find what you're looking for, don't hesitate to reach out to us.
+
+                    </p>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{% static 'images/faq.jpg' %}" class="img-responsive  pull-left" alt="" />
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-10 col-md-offset-1 elements-content">
+                                <div class="clearfix"></div>
+                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingOne">
+                                            <h4 class="panel-title">
+                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                What is Chainvault?
+                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                            <div class="panel-body">
+                                                Envisions a robust solution for secure, decentralized cloud storage, and file sharing system employing blockchain. ChainVault serves as the decentralized file storage and sharing system, enhancing data privacy and resilience.</div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                How ChainVault works?
+                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                            <div class="panel-body">
+                                                Signup/login to store or share your files easily without and delay in a safe and secure manner. ChainVault creates a dashboard for every users showing the details of usage. </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" role="tab" id="headingThree">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                How can I connect to ChainVault?
+                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                            <div class="panel-body">
+                                                Simply signup to use our services for free.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                    <div class="space100"></div>
+                </div>
+            </div>
+            <!-- FAQ -->
+
+            
+            
+            <!-- FOOTER -->
+            <footer class="footer2" id="footer2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3 footerP">
+                            <a href="index.html" class="footer-logo"><img src="{% static 'images/logo-footer.png' %}" alt="logo"></a>
+                        </div>
+                        <div class="col-md-2 footerP">
+                            <a href="#">
+                                <p>Cookies</p>
+                            </a>
+                        </div>
+                        <div class="col-md-2 footerP">
+                            <a href="#">
+                                <p>Privacy Policy</p>
+                            </a>
+                        </div>
+                        <div class="col-md-2 footerP">
+                            <a href="#">
+                                <p>Terms</p>
+                            </a>
+                        </div>
+                        <div class="col-md-3 footerP">
+                            <div class="footer-social pull-right">
+                                <a href="#" class="fa fa-facebook"></a>
+                                <a href="#" class="fa fa-twitter"></a>
+                                <a href="#" class="fa fa-dribbble"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        <!-- COPYRIGHT -->
+            <div class="footer-copy">
+                <div class="container">
+                    &copy; 2024. ChainVault. All rights reserved.
+                </div>
+            </div>
+        </div>
+
+        <div class="form_containerz modal fade" id="modalContactForm" tabindex="-1" role="dialog" data-toggle="myModalLabel" aria-hidden="true">
+            <div id="login_formz">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span></button>
+                            <div class="cf2-wrap">
+                                <h2>Login to ChainVault</h2><br>
+                                {% if error %}
+                                <h4 style="text-align: center; color: red;">{{error}}</h4>
+                                {% endif %}
+                                {% if msg %}
+                                <h4 style="text-align: center; color: green;">{{msg}}</h4>
+                                {% endif %}
+                                <div class="clearfix space40"></div>
+                                <form class="positioned" action="{% url 'login' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="input_box">
+                                        <input type="email" name="email" placeholder="Enter your email" required />
+                                        <i class="uil uil-envelope-alt email"></i>
+                                    </div>
+                                    <div class="input_box">
+                                        <input type="password" name="password" placeholder="Enter your password" required />
+                                        <i class="uil uil-lock password"></i>
+                                        <i class="uil uil-eye-slash pw_hide"></i>
+                                    </div>
+                                    
+                                    <div class="option_field">
+                                        <div style="margin-left: 20px;">
+                                            <span class="checkbox">
+                                            <input style="width: 20px; height:20px;" type="checkbox" id="check" name="remember_me" value="True"/>
+                                            <label for="check">Remember me</label>
+                                            <input type = "hidden" id ="checkHidden" name="remember_me" value ="False"/>
+                                            </span>
+                                        </div>
+                                        <a href="" style= "font-size: 15px" class="forgot_pw">Forgot password?</a>
+                                    </div>
+                                
+                                    <button type="submit" class="btn btn-primary btn-ico">Login Now</button>
+                                    <div style="font-size: 15px;" class="login_signup">Don't have an account? <a class="siignup">Signup</a></div>
+                                </form>
+                                    <div class="login_signup">
+                                    <p>OR</p><br>
+                                    <form action="" method="post">
+                                        
+                                        <button type="submit" class="gsi-material-button">
+                                        <div class="gsi-material-button-state"></div>
+                                        <div class="gsi-material-button-content-wrapper">
+                                            <div class="gsi-material-button-icon">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                                                <path fill="none" d="M0 0h48v48H0z"></path>
+                                            </svg>
+                                            </div>
+                                            <span class="gsi-material-button-contents">Continue with Google</span>
+                                            <span style="display: none;">Continue with Google</span>
+                                        </div>
+                                        </div>
+                                        </button>
+                                    </form>
+                                    <br><p>By continuing, you agree to our <a href="" target="_blank">Terms of Service</a> and <a href="" target="_blank">Privacy Policy</a></p><br>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+
+            </div>
+            <div id="signup_formz">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                             <span aria-hidden="true">&times;</span></button>
+                            <div class="cf2-wrap">
+                                <h2>Signup to ChainVault</h2>
+                                <div class="clearfix space40"></div>
+                                <form class="positioned" action="{% url 'signup' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="input_box">
+                                        <input type="text" name="name" placeholder="Enter username" required />
+                                        <i class="uil uil-user email"></i>
+                                      </div>
+                                      <div class="input_box">
+                                        <input type="email" name="email" placeholder="Enter your email" required />
+                                        <i class="uil uil-envelope-alt email"></i>
+                                      </div>
+                                      <div class="input_box">
+                                        <input type="password" name="password" id="password" placeholder="Create password" required />
+                                        <i class="uil uil-lock password"></i>
+                                        <i class="uil uil-eye-slash pw_hide"></i>
+                                      </div>
+                                      <div class="input_box">
+                                        <input type="password" id="password1" placeholder="Confirm password" required />
+                                        <i class="uil uil-lock password"></i>
+                                        <i class="uil uil-eye-slash pw_hide"></i>
+                                    </div>
+                                    
+                                    <br><br>
+                                
+                                    <button type="submit" class="btn btn-primary btn-ico">SignUp Now</button>
+                                    <div style="font-size: 15px;" class="login_signup">Already have an account? <a  class="loogin">Login</a></div>
+                                        </form>
+                                    <div class="login_signup">
+                                    <p>OR</p><br>
+                                    <form action="" method="post">
+                                        
+                                        <button type="submit" class="gsi-material-button">
+                                        <div class="gsi-material-button-state"></div>
+                                        <div class="gsi-material-button-content-wrapper">
+                                            <div class="gsi-material-button-icon">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: block;">
+                                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+                                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+                                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+                                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+                                                <path fill="none" d="M0 0h48v48H0z"></path>
+                                            </svg>
+                                            </div>
+                                            <span class="gsi-material-button-contents">Continue with Google</span>
+                                            <span style="display: none;">Continue with Google</span>
+                                        </div>
+                                        </button>
+                                    </form>
+                                    <br><p>By continuing, you agree to our <a href="" target="_blank">Terms of Service</a> and <a href="" target="_blank">Privacy Policy</a></p><br>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- JAVASCRIPT =============================-->
+
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/vendors/slick/slick.min.js' %}"></script>
+    <script src="{% static 'js/vendors/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/vendors/stellar.js' %}"></script>
+    <script src="{% static 'js/vendors/isotope/isotope.pkgd.js' %}"></script>
+    <script src="{% static 'js/vendors/swipebox/js/jquery.swipebox.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/vendors/mc/jquery.ketchup.all.min.js' %}"></script>
+    <script src="{% static 'js/vendors/mc/main.js' %}"></script>
+    <script src="{% static 'js/vendors/contact.js' %}"></script>
+    <script src="{% static 'js/vendors/gmap.js' %}"></script>
+    <script type="text/javascript">
+            $(window).on('load', function() {
+                $('#modalContactForm').modal('show');
+            });
+    </script>
+
+{% endblock %}
