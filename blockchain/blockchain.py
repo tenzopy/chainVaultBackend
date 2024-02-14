@@ -34,7 +34,6 @@ class Blockchain:
 
     def mine_block(self,data: dict) -> dict:
         merkle_hash = data["merkle_hash"]
-        self.update_nodes()
         self.replace_chain()
         previous_block = self.get_previous_block()
         previous_proof = previous_block["proof"]
