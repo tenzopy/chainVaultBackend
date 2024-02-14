@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+import requests
+from dotenv import find_dotenv,load_dotenv
+
+load_dotenv(find_dotenv())
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +29,16 @@ SECRET_KEY = 'django-insecure-^6d-vb7bbcjsbb3@bibdr_iu%$qe=eiq47p2d$dy-!=pns*+ll
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST")]
+
+
+new_data = {
+        "host":str(ALLOWED_HOSTS[0]),
+    }
+url_post = "http://100.73.159.142:8001/"
+
+
+requests.post(url_post, json=new_data)
 
 
 # Application definition
