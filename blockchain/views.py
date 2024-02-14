@@ -10,7 +10,6 @@ blockchain = Blockchain()
 
 @api_view(['GET'])
 def get_chain(request):
-    blockchain.replace_chain()
     if not blockchain.is_chain_valid(blockchain.chain):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     return Response(blockchain.chain)
