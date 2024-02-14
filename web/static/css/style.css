@@ -4420,6 +4420,13 @@ input:focus, textarea:focus {
 		font-size: 38px;
 	}
 }
+@media only screen and (min-width: 320px)  and (max-width: 430px) {
+
+	.option_field {
+		flex-direction: column;
+		margin-bottom: 10px;
+	}
+}
 
 @media only screen and (min-width: 320px)  and (max-width: 370px) {
 
@@ -5314,6 +5321,7 @@ input:focus, textarea:focus {
 	color: #333;
 	transition: all 0.2s ease;
 	border-bottom: 1.5px solid #aaaaaa;
+	border-radius: 5px
   }
   .input_box input:focus {
 	border-color: var(--cyan);
@@ -5328,6 +5336,7 @@ input:focus, textarea:focus {
   .input_box i.email,
   .input_box i.password {
 	left: 0;
+	padding-left: 3px;
   }
   .input_box input:focus ~ i.email,
   .input_box input:focus ~ i.password {
@@ -5335,6 +5344,30 @@ input:focus, textarea:focus {
   }
   .input_box i.pw_hide {
 	right: 0;
+	padding-right: 3px;
 	font-size: 18px;
 	cursor: pointer;
   }
+
+.option_field {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.option_field label {
+	font-size: 15px;
+}
+
+.option_field input {
+	height: 50px;
+	padding: 0 20px;
+	font-size: 16px;
+	letter-spacing: 0;
+	font-weight: 400;
+	width: 100%;
+	margin: 0 0 20px;
+	background: #fff;
+	border-radius: 0px;
+	color: #000;
+	border: 1px solid #fff;
+}
