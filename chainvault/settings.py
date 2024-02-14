@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'web',
     'api',
     'blockchain',
+    'hash_table',
     'db',
 ]
 

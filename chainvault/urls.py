@@ -22,5 +22,6 @@ urlpatterns = [
     path('auth/',include('user.urls')),
     path('blockchain/',include('blockchain.urls')),
     path('dashboard/',include('dashboard.urls')),
+    path('hashtable/',include('hash_table.urls')),
     path('',include('web.urls')),
 ]
