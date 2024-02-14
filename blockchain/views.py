@@ -18,7 +18,6 @@ def get_chain(request):
 @api_view(['POST'])
 def mine_block(request):
     data = request.data
-    blockchain.replace_chain()
     if not blockchain.is_chain_valid(blockchain.chain):
         return Response(status=status.HTTP_400_BAD_REQUEST)
     return Response(blockchain.mine_block(data))

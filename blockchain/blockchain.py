@@ -15,7 +15,7 @@ class Blockchain:
     def __init__(self) -> None:
         self.chain  = list()
         self.nodes = list()
-        self.difficulty = 4
+        self.difficulty = 3
         genesis_block = self._create_block(
             index = 1,
             merkle_hash= "Genesis Block",
@@ -33,6 +33,7 @@ class Blockchain:
 
     def mine_block(self,data: dict) -> dict:
         merkle_hash = data["merkle_hash"]
+        self.replace_chain()
         previous_block = self.get_previous_block()
         previous_proof = previous_block["proof"]
         index = len(self.chain) + 1
