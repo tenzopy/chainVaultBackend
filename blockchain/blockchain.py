@@ -119,6 +119,7 @@ class Blockchain:
         return True
     
     def replace_chain(self) -> bool:
+        self.update_nodes()
         network = self.nodes
         longest_chain = None
         max_length = len(self.chain)
