@@ -8,4 +8,8 @@ from hash_table.views import dhtnode
 
 def dash(request):
 
+    blockchain.replace_chain()
+
+    print(blockchain.chain)
+
     return HttpResponse("hey")
