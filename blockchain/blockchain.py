@@ -1,12 +1,19 @@
 import datetime as _dt
 import hashlib as _hashlib
 import json as _json
+import requests
+import os
+from dotenv import find_dotenv,load_dotenv
 
+load_dotenv(find_dotenv())
+
+COORDINATION_SERVER = os.environ.get("COORDINATION_SERVER")
 
 class Blockchain:
 
     def __init__(self) -> None:
         self.chain  = list()
+        self.nodes = list()
         self.difficulty = 4
         genesis_block = self._create_block(
             index = 1,
@@ -15,6 +22,13 @@ class Blockchain:
             previous_hash = "0",
         )
         self.chain.append(genesis_block)
+
+    def update_nodes(self) -> None:
+        try:
+            urlGET = f"http://{COORDINATION_SERVER}/"
+            self.nodes = requests.get(urlGET).json()['hosts']
+        except:
+            print("Unable to connect to Coordination Server.")
 
     def mine_block(self,data: dict) -> dict:
         merkle_hash = data["merkle_hash"]
@@ -70,13 +84,13 @@ class Blockchain:
         }
         return block
 
-    def is_chain_valid(self) -> bool:
+    def is_chain_valid(self,chain: dict) -> bool:
         
-        current_block = self.chain[0]
+        current_block = chain[0]
         block_index = 1
 
-        while block_index < len(self.chain):
-            next_block = self.chain[block_index]
+        while block_index < len(chain):
+            next_block = chain[block_index]
 
             if next_block["previous_hash"] != self._hash(current_block):
                 return False
@@ -99,3 +113,20 @@ class Blockchain:
             block_index += 1
 
         return True
+    
+    def replace_chain(self) -> bool:
+        network = self.nodes
+        longest_chain = None
+        max_length = len(self.chain)
+        for node in network:
+            response = requests.get(f'http://{node}:8000/blockchain/get/')
+            if response.status_code == 200:
+                chain = response.json()
+                length = len(chain)
+                if length > max_length and self.is_chain_valid(chain):
+                    max_length = length
+                    longest_chain = chain
+        if longest_chain:
+            self.chain = longest_chain
+            return True
+        return False
