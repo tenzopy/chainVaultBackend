@@ -38,7 +38,12 @@ new_data = {
 url_post = "http://100.73.159.142:8001/"
 
 
-requests.post(url_post, json=new_data)
+try:
+    requests.post(url_post, json=new_data)
+except:
+    print("Unable to Connect to Blockchain Network!")
+    quit()
+
 
 
 # Application definition
