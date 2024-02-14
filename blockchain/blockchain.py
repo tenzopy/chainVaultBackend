@@ -4,6 +4,7 @@ import json as _json
 import requests
 from requests.adapters import HTTPAdapter
 import os
+from django.conf import settings
 from dotenv import find_dotenv,load_dotenv
 
 load_dotenv(find_dotenv())
@@ -122,6 +123,8 @@ class Blockchain:
         longest_chain = None
         max_length = len(self.chain)
         for node in network:
+            if node == settings.ALLOWED_HOSTS[0]:
+                continue
             try:
                 response = requests.get(f'http://{node}:8000/blockchain/get/')
             except:
