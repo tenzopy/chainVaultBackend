@@ -41,7 +41,7 @@ url_post = "http://100.73.159.142:8001/"
 try:
     requests.post(url_post, json=new_data, timeout=1.5)
 except:
-    print("Unable to Connect to Blockchain Network!")
+    print("Unable to Connect to ChainVault Network!")
     quit()
 
 
