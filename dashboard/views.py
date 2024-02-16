@@ -2,7 +2,7 @@ from django.shortcuts import render,HttpResponse
 
 from blockchain.views import blockchain
 
-from hash_table.views import dhtnode
+# from hash_table.views import dhtnode
 
 
 

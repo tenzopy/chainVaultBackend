@@ -1,50 +1,89 @@
 import hashlib
-import requests
+from blockchain.views import blockchain
+from django.conf import settings
+
+ip = settings.ALLOWED_HOSTS[0]
 
 
-class DHTNode:
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
-        self.data = {}
-        self.successor = None
-        self.predecessor = None
+class distributedHashTable:
 
-    def hash_key(self, key):
+    def __init__(self) -> None: 
+        self.data = dict() 
+        self.ip = ip
+        self.successor = self.get_successor()
+        self.predecessor = self.get_predecessor()
+    
+    def hash_key(self, key: str) -> str:
         return hashlib.sha256(key.encode()).hexdigest()
+    
+    def get_successor(self) -> str:
+        successor = None
+        blockchain.update_nodes()
+        if self.ip in blockchain.nodes:
+            successor =  blockchain.nodes[(blockchain.nodes.index(self.ip) + 1) % len(blockchain.nodes)]
+        if successor == self.ip:
+            successor = None
+        return successor
+    
+    def get_predecessor(self) -> str:
+        predecessor = None
+        blockchain.update_nodes()
+        if self.ip in blockchain.nodes:
+            predecessor =  blockchain.nodes[(blockchain.nodes.index(self.ip) - 1) % len(blockchain.nodes)]
+        if predecessor == self.ip:
+            predecessor = None
+        return predecessor
+    
+    def does_user_exist(self, key: str) -> bool:
+        if key in self.data.keys():
+            return True
+        return False 
 
-    def find_successor(self, key_hash):
-        if self.successor:
-            if self.hash_key(self.successor[0]) > key_hash:
-                return self.successor
-            else:
-                # Forward the request to the successor
-                return self.successor[1].find_successor(key_hash)
-        else:
-            return self.host, self.port
+    def add_user(self, key: str) -> bool:
+        self.data[key] = {} 
+        return True
+    
+    def does_file_exist(self, key: str, file_name: str) -> bool:
+        if file_name in self.data[key].keys():
+            return True
+        return False
+    
+    def broadcast_data(self) -> None:
+        pass
 
-    def store_data(self, key, value):
-        key_hash = self.hash_key(key)
-        successor_host, successor_port = self.find_successor(key_hash)
-        if successor_host == self.host and successor_port == self.port:
-            self.data[key] = value
-            self.broadcast_data(key, value)
-        else:
-            # Forward the data to the successor
-            requests.post(f"http://{successor_host}:{successor_port}/store_data", json={'key': key, 'value': value})
+    def store_user(self,key: str,data: dict) -> bool:
+        if not self.does_user_exist(key):
+            self.data[key] = data
+            return True
+        return False
 
-    def retrieve_data(self, key):
-        key_hash = self.hash_key(key)
-        successor_host, successor_port = self.find_successor(key_hash)
-        if successor_host == self.host and successor_port == self.port:
-            return self.data.get(key)
-        else:
-            # Forward the request to the successor
-            response = requests.get(f"http://{successor_host}:{successor_port}/retrieve_data", params={'key': key})
-            return response.json()
+    def store_file(self, key: str, file_name: str, data: dict) -> bool:
+        if not self.does_user_exist(key):
+            self.add_user(key) 
+        if self.does_file_exist(key,file_name):
+            return False
+        self.data[key][file_name] = data
+        return True
+    
+    def remove_file(self,key: str,file_name: str) -> bool:
+        if self.does_user_exist(key) and self.does_file_exist(key,file_name):
+            self.data[key].pop(file_name)
+            return True
+        return False
 
-    def broadcast_data(self, key, value):
-        # Broadcast data to other nodes
-        for node_host, node_port in [self.successor, self.predecessor]:
-            if node_host and node_port:
-                requests.post(f"http://{node_host}:{node_port}/store_data", json={'key': key, 'value': value})
+    def remove_user(self,key: str) -> bool:
+        if self.does_user_exist(key):
+            self.data.pop(key)
+            return True
+        return False
+    
+    def retrieve_file(self,key: str,file_name: str) -> dict:
+        if self.does_user_exist(key) and self.does_file_exist(key,file_name):
+            return self.data[key][file_name]
+        return {}
+
+    def retrieve_user(self,key: str) -> dict:
+        if self.does_user_exist(key):
+            return self.data[key]
+        return {}
+
