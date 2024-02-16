@@ -31,11 +31,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST")]
 
+COORDINATION_SERVER = os.environ.get("COORDINATION_SERVER")
+
 
 new_data = {
         "host":str(ALLOWED_HOSTS[0]),
     }
-url_post = "http://100.73.159.142:8001/"
+url_post = f"http://{COORDINATION_SERVER}/"
 
 
 try:
