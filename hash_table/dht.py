@@ -1,6 +1,7 @@
 import hashlib
 from blockchain.views import blockchain
 from django.conf import settings
+import requests
 
 ip = settings.ALLOWED_HOSTS[0]
 
@@ -48,12 +49,40 @@ class distributedHashTable:
             return True
         return False
     
-    def broadcast_data(self) -> None:
-        pass
+    def broadcast_filedata(self,key: str, file_name: str, data: dict) -> None:
+        try:
+            json_data = {
+                "key" : key,
+                "file_name" : file_name,
+                "data" : data
+            }
+            url_successor = f"http://{self.successor}:8000/hashtable/post_file"  
+            requests.post(url_successor, json=json_data, timeout=3)  
+
+            url_predecessor = f"http://{self.predecessor}:8000/hashtable/post_file"  
+            requests.post(url_predecessor, json=json_data, timeout=3) 
+        except:
+            print("Successor or predecessor is unavailable")
+
+
+    def broadcast_userdata(self,key: str,data: dict) -> None:
+        try:
+            json_data = {
+                "key" : key,
+                "data" : data
+            }
+            url_successor = f"http://{self.successor}:8000/hashtable/post_userdata"  
+            requests.post(url_successor, json=json_data, timeout=3)  
+
+            url_predecessor = f"http://{self.predecessor}:8000/hashtable/post_userdata"  
+            requests.post(url_predecessor, json=json_data, timeout=3) 
+        except:
+            print("Successor or predecessor is unavailable")
 
     def store_user(self,key: str,data: dict) -> bool:
         if not self.does_user_exist(key):
             self.data[key] = data
+            self.broadcast_userdata(key,data)
             return True
         return False
 
@@ -63,6 +92,7 @@ class distributedHashTable:
         if self.does_file_exist(key,file_name):
             return False
         self.data[key][file_name] = data
+        self.broadcast_filedata(key,file_name,data)
         return True
     
     def remove_file(self,key: str,file_name: str) -> bool:

@@ -6,7 +6,6 @@ from hash_table.dht import distributedHashTable
 
 DHT = distributedHashTable()
 
-
 @api_view(['GET'])
 def get_userdata(request):
     key = request.GET.get('key')
