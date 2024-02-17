@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'blockchain',
     'hash_table',
     'db',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,6 @@ EMAIL_HOST_PASSWORD = 'b839f40fd75e00'
 EMAIL_PORT = '2525'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'noreply@scit.me'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
