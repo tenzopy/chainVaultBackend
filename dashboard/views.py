@@ -8,6 +8,7 @@ from blockchain.views import blockchain
 
 from hash_table.views import DHT
 
+from ipfs.views import ipfs
 
 
 def dash(request):

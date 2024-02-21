@@ -9,7 +9,11 @@ class IPFS:
         self.protocol = protocol
         self.ip = ip
         self.port = port
-        self.client = _ipfs.connect(f'/{self.protocol}/{self.ip}/tcp/{self.port}')
+        try:
+            self.client = _ipfs.connect(f'/{self.protocol}/{self.ip}/tcp/{self.port}')
+        except:
+            print("IPFS daemon is not running!")
+            exit()
         self.location = MEDIA_ROOT
 
     def upload_to_ipfs(self, file: str):
