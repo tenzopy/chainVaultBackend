@@ -19,7 +19,7 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/',include('user.urls')),
+    path('auth/',include('allauth.urls')),
     path('blockchain/',include('blockchain.urls')),
     path('dashboard/',include('dashboard.urls')),
     path('hashtable/',include('hash_table.urls')),
