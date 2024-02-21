@@ -25,10 +25,16 @@ def upload(request):
         # Save the file locally.
         filename = fs.save(uploadFile.name, uploadFile)
 
-        # AES Encryption
+        # Calculate Checksum
         file_path = os.path.join(settings.MEDIA_ROOT,filename)
+        checksum = cal_checksum(file_path)
+
+        # AES Encryption
         encrypted_file_path = os.path.join(settings.MEDIA_ROOT, randomName(6) + ".aes")
         pyAesCrypt.encryptFile(file_path, encrypted_file_path, password)
+
+        # Calculate Encrypted Checksum
+        encrypted_checksum = cal_checksum(encrypted_file_path)
         
         # Upload to IPFS
         ipfs_cid = ipfs.upload_to_ipfs(encrypted_file_path)
