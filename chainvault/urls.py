@@ -23,5 +23,6 @@ urlpatterns = [
     path('blockchain/',include('blockchain.urls')),
     path('dashboard/',include('dashboard.urls')),
     path('hashtable/',include('hash_table.urls')),
+    path('ipfs/',include('ipfs.urls')),
     path('',include('web.urls')),
 ]
