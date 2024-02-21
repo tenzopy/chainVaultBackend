@@ -126,7 +126,7 @@ class Blockchain:
             if node == settings.ALLOWED_HOSTS[0]:
                 continue
             try:
-                response = requests.get(f'http://{node}:8000/blockchain/get/')
+                response = requests.get(f'https://{node}/blockchain/get/')
             except:
                 print(f"{node} is unavailable")
             if response.status_code == 200:
