@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load socialaccount %}
 {% block body %}
 
 <div class="body">
@@ -313,8 +314,8 @@
                                 <h2>Continue to ChainVault</h2>
                                 <div class="clearfix space40"></div>
                                     <div class="login_signup">
-                                    <form action="" method="post">
-                                        
+                                    <form action="{% provider_login_url 'google' %}" method="post">
+                                        {% csrf_token %}
                                         <button class="gsi-material-button">
                                             <div class="gsi-material-button-state"></div>
                                             <div class="gsi-material-button-content-wrapper">
