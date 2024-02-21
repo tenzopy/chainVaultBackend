@@ -11,9 +11,7 @@ from .assets import *
 fs = FileSystemStorage()
 
 def dash(request):
-
-    blockchain.replace_chain(),
-    print(DHT.data)
+    print(request.user.email)
 
 def upload(request):
     if request.method == 'POST' and request.FILES['uploadFile']:
