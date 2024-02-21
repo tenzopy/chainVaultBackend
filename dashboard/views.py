@@ -7,12 +7,15 @@ from ipfs.views import ipfs
 import pyAesCrypt
 import os
 from .assets import *
-
+from django.contrib.auth.decorators import login_required
 fs = FileSystemStorage()
 
+@login_required(login_url='home')
 def dash(request):
-    print(request.user.email)
+    return HttpResponse(f"<h2>Hai, {request.user.email}</h2><a href='/dashboard/upload/'>upload</a><br><br><a href='/dashboard/download/'>download</a><br><br><a href='/account/logout/'>logout</a>")
 
+
+@login_required(login_url='home')
 def upload(request):
     if request.method == 'POST' and request.FILES['uploadFile']:
         uploadFile, password = request.FILES['uploadFile'], request.POST.get('password')
@@ -38,6 +41,8 @@ def upload(request):
     
     return render(request, 'uploadz.html')
 
+
+@login_required(login_url='home')
 def download(request):
     if request.method == 'POST':
         cid, password = request.POST.get('CID'), request.POST.get('password')
