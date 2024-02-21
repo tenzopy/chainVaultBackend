@@ -12,3 +12,18 @@ def cal_checksum(file_path: str) -> str:
         for chunk in iter(lambda: f.read(4096), b""):
             hash_sha256.update(chunk)
     return hash_sha256.hexdigest()
+
+
+def merkle_input(key: str, file_name: str, owner: str, shared: bool, receiver: str, checksum: str, encrypted_checksum: str, ipfs_cid: str):
+    return list({
+        "key" : key,
+        "file_name" : file_name,
+        "owner" : owner,
+        "shared" : shared,
+        "receiver" : receiver,
+        "checksum" : checksum,
+        "encrypted_checksum" : encrypted_checksum,
+        "ipfs_cid" : ipfs_cid
+    }.items())
+
+

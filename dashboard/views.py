@@ -39,6 +39,12 @@ def upload(request):
         # Upload to IPFS
         ipfs_cid = ipfs.upload_to_ipfs(encrypted_file_path)
 
+        # Calculate merkle hash
+        _merkle_input = merkle_input(request.user.email, filename, request.user.email, False, None, checksum, encrypted_checksum, ipfs_cid)
+        merkle_tree.makeTreeFromArray(_merkle_input)
+        merkle_hash = merkle_tree.calculateMerkleRoot()
+        print(merkle_hash)
+
         # Remove the files from server
         os.remove(file_path)
         os.remove(encrypted_file_path)
