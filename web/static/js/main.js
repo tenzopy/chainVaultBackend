@@ -84,26 +84,4 @@ $(function() {
 });
 
 
-
-/* Login Stuff */
-
-const signupBtn = document.querySelector(".siignup"),
-loginBtn = document.querySelector(".loogin"),
-formContainer = document.querySelector(".form_containerz"),
-loginFORM = document.getElementById("login_formz"),
-signupFORM = document.getElementById("signup_formz");
-
-
-
-signupBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    loginFORM.style.display = "none";
-    signupFORM.style.display = "block";
-  });
-loginBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    signupFORM.style.display = "none";
-    loginFORM.style.display = "block";
-
-  });
   
