@@ -1,13 +1,15 @@
 from django.shortcuts import render,HttpResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from blockchain.views import blockchain
+from blockchain.views import blockchain,merkle_tree
 from hash_table.views import DHT
 from ipfs.views import ipfs
 import pyAesCrypt
 import os
 from .assets import *
 from django.contrib.auth.decorators import login_required
+
+
 fs = FileSystemStorage()
 
 @login_required(login_url='home')
