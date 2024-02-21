@@ -5,7 +5,7 @@
 {% block body %}
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="file" name="myfile">
+    <input type="file" name="uploadFile">
     <input type="password" name="password" placeholder="Enter password">
     <button type="submit">Upload</button>
   </form>
