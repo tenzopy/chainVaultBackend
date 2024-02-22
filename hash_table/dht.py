@@ -49,6 +49,52 @@ class distributedHashTable:
             return True
         return False
     
+    def request_file_from_neighbours(self, key: str, file_name: str) -> bool:
+        params = {
+            "key" : key,
+            "file_name" : file_name,
+        }
+        try:
+            response = requests.get(f'http://{self.successor}/hashtable/get_file', params, timeout=2)
+            if response.status_code == 200:
+                self.store_file(key, file_name, response.json())
+                return True
+        except:
+            print(f"{self.successor} is unavailable.")
+        
+        try:
+            response = requests.get(f'http://{self.predecessor}/hashtable/get_file', params, timeout=2)
+            if response.status_code == 200:
+                self.store_file(key, file_name, response.json())
+                return True
+        except:
+            print(f"{self.predecessor} is unavailable.")
+
+        return False
+        
+    
+    def request_user_from_neighbours(self, key: str) -> None:
+        params = {
+            "key" : key,
+        }
+        try:
+            response = requests.get(f'http://{self.successor}/hashtable/get_userdata', params, timeout=2)
+            if response.status_code == 200:
+                self.store_user(key, response.json())
+                return True
+        except:
+            print(f"{self.successor} is unavailable.")
+        
+        try:
+            response = requests.get(f'http://{self.predecessor}/hashtable/get_userdata', params, timeout=2)
+            if response.status_code == 200:
+                self.store_user(key, response.json())
+                return True
+        except:
+            print(f"{self.predecessor} is unavailable.")
+
+        return False
+    
     def broadcast_filedata(self,key: str, file_name: str, data: dict) -> None:
         try:
             json_data = {

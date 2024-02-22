@@ -68,10 +68,28 @@ def download(request):
 
         # Retreive File Data From DHT
         file_data = DHT.retrieve_file(request.user.email,file_name)
-        cid = file_data["ipfs_cid"]
+        if file_data == {} and DHT.request_file_from_neighbours(request.user.email,file_name):
+            file_data = DHT.retrieve_file(request.user.email,file_name)
+
+        # Retreive Blockchain
+        block_index = file_data["block_index"]
+        blockchain.replace_chain()
+        block = blockchain.chain[block_index-1]
+
+        # Calculate merkle hash
+        _merkle_input = merkle_input(request.user.email, file_name, file_data["shared"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
+        merkle_tree.makeTreeFromArray(_merkle_input)
+        merkle_hash = merkle_tree.calculateMerkleRoot()
+
+        # Verify Merkle Hash
+        if block["merkle_hash"] != merkle_hash:
+            return render(request, 'downloadz.html', {
+                "error" : "Merkle Hash Verification Failed."
+            })
 
         # Download from IPFS
         encrypted_file_name = randomName(6) + ".aes"
+        cid = file_data["ipfs_cid"]
         ipfs.download_from_ipfs(cid,encrypted_file_name)
 
         # Calculate Encrypted Checksum
@@ -84,7 +102,12 @@ def download(request):
 
         # AES Decryption
         file_path = os.path.join(settings.MEDIA_ROOT,file_name)
-        pyAesCrypt.decryptFile(encrypted_file_path, file_path, password)
+        try:
+            pyAesCrypt.decryptFile(encrypted_file_path, file_path, password)
+        except:
+            return render(request, 'downloadz.html', {
+                "error" : "Wrong Password"
+            })
 
         # Calculate Checksum
         checksum = cal_checksum(file_path)
@@ -101,6 +124,9 @@ def download(request):
         })
     
     user_data = DHT.retrieve_user(request.user.email)
+    if user_data == {} and DHT.request_user_from_neighbours(request.user.email):
+        user_data = DHT.retrieve_user(request.user.email)
+        
 
     context = {
         "file_names" : list(user_data.keys())
