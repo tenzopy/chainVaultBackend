@@ -40,7 +40,7 @@ def upload(request):
         ipfs_cid = ipfs.upload_to_ipfs(encrypted_file_path)
 
         # Calculate merkle hash
-        _merkle_input = merkle_input(request.user.email, filename, request.user.email, 'False', '', checksum, encrypted_checksum, ipfs_cid)
+        _merkle_input = merkle_input(request.user.email, filename, 'False', '', checksum, encrypted_checksum, ipfs_cid)
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
         
@@ -48,7 +48,8 @@ def upload(request):
         block = blockchain.mine_block({"merkle_hash" : merkle_hash})
 
         # Add to Distributed Hash Table
-        DHT.store_file(request.user.email, filename, hashTableDataDict(request.user.email, 'False', '', checksum, encrypted_checksum, ipfs_cid))
+        DHT.store_file(request.user.email, filename, hashTableDataDict('False', '', checksum, encrypted_checksum, ipfs_cid))
+        print(DHT.data)
 
         # Remove the files from server
         os.remove(file_path)
