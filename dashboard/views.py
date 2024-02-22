@@ -68,7 +68,6 @@ def download(request):
 
         # Retreive File Data From DHT
         file_data = DHT.retrieve_file(request.user.email,file_name)
-        print(file_data)
         cid = file_data["ipfs_cid"]
 
         # Download from IPFS
@@ -98,7 +97,7 @@ def download(request):
         os.remove(encrypted_file_path)
 
         return render(request, 'downloadz.html', {
-            'download_url': fs.url('bling.jpg')
+            'download_url': fs.url(file_name)
         })
     
     user_data = DHT.retrieve_user(request.user.email)
