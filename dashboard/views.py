@@ -40,7 +40,7 @@ def upload(request):
         ipfs_cid = ipfs.upload_to_ipfs(encrypted_file_path)
 
         # Calculate merkle hash
-        _merkle_input = merkle_input(request.user.email, filename, 'False', '', checksum, encrypted_checksum, ipfs_cid)
+        _merkle_input = merkle_input(request.user.email, uploadFile.name, 'False', '', checksum, encrypted_checksum, ipfs_cid)
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
         
@@ -48,8 +48,7 @@ def upload(request):
         block = blockchain.mine_block({"merkle_hash" : merkle_hash})
 
         # Add to Distributed Hash Table
-        DHT.store_file(request.user.email, filename, hashTableDataDict('False', '', checksum, encrypted_checksum, ipfs_cid))
-        print(DHT.data)
+        DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], 'False', '', checksum, encrypted_checksum, ipfs_cid))
 
         # Remove the files from server
         os.remove(file_path)
@@ -65,16 +64,35 @@ def upload(request):
 @login_required(login_url='home')
 def download(request):
     if request.method == 'POST':
-        cid, password = request.POST.get('CID'), request.POST.get('password')
+        file_name, password = request.POST.get('file_name'), request.POST.get('password')
+
+        # Retreive File Data From DHT
+        file_data = DHT.retrieve_file(request.user.email,file_name)
+        print(file_data)
+        cid = file_data["ipfs_cid"]
 
         # Download from IPFS
         encrypted_file_name = randomName(6) + ".aes"
         ipfs.download_from_ipfs(cid,encrypted_file_name)
 
-        # AES Decryption
+        # Calculate Encrypted Checksum
         encrypted_file_path = os.path.join(settings.MEDIA_ROOT, encrypted_file_name)
-        file_path = os.path.join(settings.MEDIA_ROOT,"bling.jpg")
+        encrypted_checksum = cal_checksum(encrypted_file_path)
+        if file_data["encrypted_checksum"] != encrypted_checksum:
+            return render(request, 'downloadz.html', {
+                "error" : "Checksum Verification Failed."
+            })
+
+        # AES Decryption
+        file_path = os.path.join(settings.MEDIA_ROOT,file_name)
         pyAesCrypt.decryptFile(encrypted_file_path, file_path, password)
+
+        # Calculate Checksum
+        checksum = cal_checksum(file_path)
+        if file_data["checksum"] != checksum:
+            return render(request, 'downloadz.html', {
+                "error" : "Checksum Verification Failed."
+            })
 
         # Remove files from server
         os.remove(encrypted_file_path)
@@ -83,7 +101,12 @@ def download(request):
             'download_url': fs.url('bling.jpg')
         })
     
-    return render(request, 'downloadz.html')
+    user_data = DHT.retrieve_user(request.user.email)
+
+    context = {
+        "file_names" : list(user_data.keys())
+    }
+    return render(request, 'downloadz.html', context)
 
 def share(request):
     pass

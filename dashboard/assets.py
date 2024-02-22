@@ -17,8 +17,9 @@ def cal_checksum(file_path: str) -> str:
 def merkle_input(key: str, file_name: str, shared: str, receiver: str, checksum: str, encrypted_checksum: str, ipfs_cid: str):
     return [key, file_name, shared, receiver, checksum, encrypted_checksum, ipfs_cid]
 
-def hashTableDataDict(shared: str, receiver: str, checksum: str, encrypted_checksum: str, ipfs_cid: str) -> dict:
+def hashTableDataDict(block_index: int, shared: str, receiver: str, checksum: str, encrypted_checksum: str, ipfs_cid: str) -> dict:
     return {
+        "block_index" : block_index,
         "shared" : shared,
         "receiver" : receiver,
         "checksum" : checksum,
