@@ -56,10 +56,10 @@ class distributedHashTable:
                 "file_name" : file_name,
                 "data" : data
             }
-            url_successor = f"https://{self.successor}/hashtable/post_file"  
+            url_successor = f"http://{self.successor}/hashtable/post_file"  
             requests.post(url_successor, json=json_data, timeout=3)  
 
-            url_predecessor = f"https://{self.predecessor}/hashtable/post_file"  
+            url_predecessor = f"http://{self.predecessor}/hashtable/post_file"  
             requests.post(url_predecessor, json=json_data, timeout=3) 
         except:
             print("Successor or predecessor is unavailable")
@@ -71,10 +71,10 @@ class distributedHashTable:
                 "key" : key,
                 "data" : data
             }
-            url_successor = f"https://{self.successor}/hashtable/post_userdata"  
+            url_successor = f"http://{self.successor}/hashtable/post_userdata"  
             requests.post(url_successor, json=json_data, timeout=3)  
 
-            url_predecessor = f"https://{self.predecessor}/hashtable/post_userdata"  
+            url_predecessor = f"http://{self.predecessor}/hashtable/post_userdata"  
             requests.post(url_predecessor, json=json_data, timeout=3) 
         except:
             print("Successor or predecessor is unavailable")
