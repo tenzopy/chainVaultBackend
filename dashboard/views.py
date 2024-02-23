@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 
 fs = FileSystemStorage()
 
+media_list = MediaList()
+
 @login_required(login_url='home')
 def dash(request):
     return HttpResponse(f"<h2>Hai, {request.user.first_name}</h2><a href='/dashboard/upload/'>upload</a><br><br><a href='/dashboard/download/'>download</a><br><br><a href='/account/logout/'>logout</a>")
@@ -118,6 +120,7 @@ def download(request):
 
         # Remove files from server
         os.remove(encrypted_file_path)
+        media_list.add(file_path)
 
         return render(request, 'downloadz.html', {
             'download_url': fs.url(file_name)

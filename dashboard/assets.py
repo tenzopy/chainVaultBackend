@@ -1,6 +1,15 @@
 from random import choices
 import string
 import hashlib
+from datetime import datetime
+
+
+class MediaList:
+    def __init__(self) -> None:
+        self.data = list()
+
+    def add(self,file_path: str) -> bool:
+        self.data.append((file_path,datetime.now()))
 
 def randomName(length: int) -> str:
     return ''.join(choices(string.ascii_uppercase + string.ascii_lowercase, k=length))
