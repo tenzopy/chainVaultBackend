@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChainVault Dashboard</title>
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+<body>
+<div class="container">
+  <button class="logout-btn" onclick="logout()">Logout</button>
+  <img src="{% static 'images/home_image.png' %}" alt="Cloud Storage and File Sharing" class="cloud-image">
+  <h1>Welcome {{ request.user.first_name }}!</h1>
+  <div class="buttons">
+    <button class="share-files-btn" onclick="shareFiles()">File Sharing</button>
+    <button class="store-files-btn" onclick="storeFiles()">Cloud Storage</button>
+  </div>
+</div>
+<script>
+function shareFiles() {
+    window.location.href = "{% url 'upload' %}";
+  }
+  
+function storeFiles() {
+    window.location.href = "{% url 'download' %}"; 
+  }
+  
+function logout() {
+    window.location.href = "{% url 'logout' %}";
+  }</script>
+</body>
+</html>

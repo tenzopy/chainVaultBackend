@@ -16,7 +16,7 @@ media_list = MediaList()
 
 @login_required(login_url='home')
 def dash(request):
-    return HttpResponse(f"<h2>Hai, {request.user.first_name}</h2><a href='/dashboard/upload/'>upload</a><br><br><a href='/dashboard/download/'>download</a><br><br><a href='/account/logout/'>logout</a>")
+    return render(request,'dashboard.html')
 
 
 @login_required(login_url='home')

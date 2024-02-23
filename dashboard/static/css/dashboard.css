@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #024d94 50%, #f8d171 50%);
+    /* Blue on the left 50%, Yellow on the right 50% */
+    transition: background-color 0.5s ease;
+    color: #fff; /* Set text color to white for better visibility */
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure container takes up at least the full viewport height */
+    position: relative; /* Ensure position:relative for positioning elements relative to this container */
+  }
+  
+  .logout-btn, .share-files-btn {
+    background-color: #f8d171; /* Yellow */
+    color: #000; /* Black text */
+    border: 2px solid #f8d171; /* Yellow border */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    font-weight: bold; /* Bolder text */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Transition latency added */
+  }
+  
+  .logout-btn:hover, .share-files-btn:hover {
+    background-color: transparent; /* Transparent background on hover */
+    border-color: #f8d171; /* Yellow border on hover */
+    color: #fff; /* White text on hover */
+  }
+
+  .store-files-btn {
+    background-color: #024d94; /* Yellow */
+    color: #ffffff; /* Black text */
+    border: 2px solid #024d94; /* Yellow border */
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+    font-weight: bold; /* Bolder text */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; /* Transition latency added */
+  }
+  
+  .store-files-btn:hover {
+    background-color: transparent; /* Transparent background on hover */
+    border-color: #024d94; /* Yellow border on hover */
+    color: #000000; /* White text on hover */
+  }
+
+  .share-files-btn, .store-files-btn {
+    width: 140px; /* Fixed width for buttons */
+    display: inline-block; /* Set display to inline-block */
+  }
+  
+  .logout-btn {
+    position: fixed; /* Position fixed to keep it at the top left corner of the screen */
+    top: 10px;
+    left: 10px;
+  }
+  
+  .cloud-image {
+    width: 80%; /* 80% of the viewport width */
+    max-width: 400px; /* Maximum width of 400px */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 30px; /* Increased margin */
+    animation: breathe 3s infinite alternate;
+}
+
+@keyframes breathe {
+    0% {
+      transform: scale(1) translateX(-2px) translateY(-2px); /* Move slightly left and up */
+    }
+    100% {
+      transform: scale(1.05) translateX(2px) translateY(2px); /* Move slightly right and down */
+    }
+  }
+  
+  h1 {
+    font-size: 36px; /* Increase font size */
+    color: #fff; /* White text */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow for better readability */
+  }
+  
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .buttons button {
+    margin: 10px;
+    padding: 15px 0; /* Increased padding */
+    cursor: pointer;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+  
+  
