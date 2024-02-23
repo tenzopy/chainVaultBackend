@@ -126,7 +126,7 @@ class Blockchain:
             if node == settings.ALLOWED_HOSTS[0]:
                 continue
             try:
-                response = requests.get(f'https://{node}/blockchain/get/',timeout=2)
+                response = requests.get(f'https://{node}/blockchain/get/',timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
             except:
                 print(f"{node} is unavailable")
             if response.status_code == 200:

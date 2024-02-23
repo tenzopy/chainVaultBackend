@@ -55,7 +55,7 @@ class distributedHashTable:
             "file_name" : file_name,
         }
         try:
-            response = requests.get(f'https://{self.successor}/hashtable/get_file', params, timeout=2)
+            response = requests.get(f'https://{self.successor}/hashtable/get_file', params, timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
             if response.status_code == 200:
                 self.store_file(key, file_name, response.json())
                 return True
@@ -63,7 +63,7 @@ class distributedHashTable:
             print(f"{self.successor} is unavailable.")
         
         try:
-            response = requests.get(f'https://{self.predecessor}/hashtable/get_file', params, timeout=2)
+            response = requests.get(f'https://{self.predecessor}/hashtable/get_file', params, timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
             if response.status_code == 200:
                 self.store_file(key, file_name, response.json())
                 return True
@@ -78,7 +78,7 @@ class distributedHashTable:
             "key" : key,
         }
         try:
-            response = requests.get(f'https://{self.successor}/hashtable/get_userdata', params, timeout=2)
+            response = requests.get(f'https://{self.successor}/hashtable/get_userdata', params, timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
             if response.status_code == 200:
                 self.store_user(key, response.json())
                 return True
@@ -86,7 +86,7 @@ class distributedHashTable:
             print(f"{self.successor} is unavailable.")
         
         try:
-            response = requests.get(f'https://{self.predecessor}/hashtable/get_userdata', params, timeout=2)
+            response = requests.get(f'https://{self.predecessor}/hashtable/get_userdata', params, timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
             if response.status_code == 200:
                 self.store_user(key, response.json())
                 return True
@@ -103,10 +103,10 @@ class distributedHashTable:
                 "data" : data
             }
             url_successor = f"https://{self.successor}/hashtable/post_file"  
-            requests.post(url_successor, json=json_data, timeout=3)  
+            requests.post(url_successor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt')  
 
             url_predecessor = f"https://{self.predecessor}/hashtable/post_file"  
-            requests.post(url_predecessor, json=json_data, timeout=3) 
+            requests.post(url_predecessor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt') 
         except:
             print("Successor or predecessor is unavailable")
 
@@ -118,10 +118,10 @@ class distributedHashTable:
                 "data" : data
             }
             url_successor = f"https://{self.successor}/hashtable/post_userdata"  
-            requests.post(url_successor, json=json_data, timeout=3)  
+            requests.post(url_successor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt')  
 
             url_predecessor = f"https://{self.predecessor}/hashtable/post_userdata"  
-            requests.post(url_predecessor, json=json_data, timeout=3) 
+            requests.post(url_predecessor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt') 
         except:
             print("Successor or predecessor is unavailable")
 
