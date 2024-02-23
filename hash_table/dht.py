@@ -55,7 +55,7 @@ class distributedHashTable:
             "file_name" : file_name,
         }
         try:
-            response = requests.get(f'http://{self.successor}/hashtable/get_file', params, timeout=2)
+            response = requests.get(f'https://{self.successor}/hashtable/get_file', params, timeout=2)
             if response.status_code == 200:
                 self.store_file(key, file_name, response.json())
                 return True
@@ -63,7 +63,7 @@ class distributedHashTable:
             print(f"{self.successor} is unavailable.")
         
         try:
-            response = requests.get(f'http://{self.predecessor}/hashtable/get_file', params, timeout=2)
+            response = requests.get(f'https://{self.predecessor}/hashtable/get_file', params, timeout=2)
             if response.status_code == 200:
                 self.store_file(key, file_name, response.json())
                 return True
@@ -78,7 +78,7 @@ class distributedHashTable:
             "key" : key,
         }
         try:
-            response = requests.get(f'http://{self.successor}/hashtable/get_userdata', params, timeout=2)
+            response = requests.get(f'https://{self.successor}/hashtable/get_userdata', params, timeout=2)
             if response.status_code == 200:
                 self.store_user(key, response.json())
                 return True
@@ -86,7 +86,7 @@ class distributedHashTable:
             print(f"{self.successor} is unavailable.")
         
         try:
-            response = requests.get(f'http://{self.predecessor}/hashtable/get_userdata', params, timeout=2)
+            response = requests.get(f'https://{self.predecessor}/hashtable/get_userdata', params, timeout=2)
             if response.status_code == 200:
                 self.store_user(key, response.json())
                 return True
@@ -102,10 +102,10 @@ class distributedHashTable:
                 "file_name" : file_name,
                 "data" : data
             }
-            url_successor = f"http://{self.successor}/hashtable/post_file"  
+            url_successor = f"https://{self.successor}/hashtable/post_file"  
             requests.post(url_successor, json=json_data, timeout=3)  
 
-            url_predecessor = f"http://{self.predecessor}/hashtable/post_file"  
+            url_predecessor = f"https://{self.predecessor}/hashtable/post_file"  
             requests.post(url_predecessor, json=json_data, timeout=3) 
         except:
             print("Successor or predecessor is unavailable")
@@ -117,10 +117,10 @@ class distributedHashTable:
                 "key" : key,
                 "data" : data
             }
-            url_successor = f"http://{self.successor}/hashtable/post_userdata"  
+            url_successor = f"https://{self.successor}/hashtable/post_userdata"  
             requests.post(url_successor, json=json_data, timeout=3)  
 
-            url_predecessor = f"http://{self.predecessor}/hashtable/post_userdata"  
+            url_predecessor = f"https://{self.predecessor}/hashtable/post_userdata"  
             requests.post(url_predecessor, json=json_data, timeout=3) 
         except:
             print("Successor or predecessor is unavailable")
