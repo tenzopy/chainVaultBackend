@@ -99,7 +99,7 @@ def download(request):
 
         # Verify Merkle Hash
         if block["merkle_hash"] != merkle_hash:
-            return Response({"status": "Merkle Verification Failed",},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "Merkle Verification Failed",},status=status.HTTP_200_OK)
 
         # Download from IPFS
         encrypted_file_name = randomName(6) + ".aes"
@@ -110,31 +110,27 @@ def download(request):
         encrypted_file_path = os.path.join(settings.MEDIA_ROOT, encrypted_file_name)
         encrypted_checksum = cal_checksum(encrypted_file_path)
         if file_data["encrypted_checksum"] != encrypted_checksum:
-            return render(request, 'downloadz.html', {
-                "error" : "Checksum Verification Failed."
-            })
+            return Response({"status": "Checksum Verification Failed",},status=status.HTTP_200_OK)
 
         # AES Decryption
         file_path = os.path.join(settings.MEDIA_ROOT,file_name)
         try:
             pyAesCrypt.decryptFile(encrypted_file_path, file_path, password)
         except:
-            return render(request, 'downloadz.html', {
-                "error" : "Wrong Password"
-            })
-
+            return Response({"status": "Wrong Password",},status=status.HTTP_200_OK)
+        
         # Calculate Checksum
         checksum = cal_checksum(file_path)
         if file_data["checksum"] != checksum:
-            return render(request, 'downloadz.html', {
-                "error" : "Checksum Verification Failed."
-            })
+            return Response({"status": "Checksum Verification Failed",},status=status.HTTP_200_OK)
 
         # Remove files from server
         os.remove(encrypted_file_path)
         media_list.add(file_path)
 
         return Response({"status": "ok","download_url": fs.url(file_name)},status=status.HTTP_200_OK)
+    
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 def share(request):
     pass

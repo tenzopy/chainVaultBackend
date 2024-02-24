@@ -124,7 +124,14 @@ document.addEventListener("DOMContentLoaded", function() {
             const baseDiv = document.getElementById('downPass')
             baseDiv.appendChild(a)
             document.getElementById('filePassword').value = '';
-
+        }
+        else {
+            var b = document.createElement('h4');
+            b.innerHTML = response.status;
+            b.style.color = 'red';
+            const baseDiv = document.getElementById('downPass')
+            baseDiv.appendChild(b)
+            document.getElementById('filePassword').value = '';
 
         }
       });
