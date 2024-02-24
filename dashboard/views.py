@@ -110,6 +110,7 @@ def download(request):
         encrypted_file_path = os.path.join(settings.MEDIA_ROOT, encrypted_file_name)
         encrypted_checksum = cal_checksum(encrypted_file_path)
         if file_data["encrypted_checksum"] != encrypted_checksum:
+            os.remove(encrypted_file_path)
             return Response({"status": "Checksum Verification Failed",},status=status.HTTP_200_OK)
 
         # AES Decryption
@@ -117,11 +118,14 @@ def download(request):
         try:
             pyAesCrypt.decryptFile(encrypted_file_path, file_path, password)
         except:
+            os.remove(encrypted_file_path)
             return Response({"status": "Wrong Password",},status=status.HTTP_200_OK)
         
         # Calculate Checksum
         checksum = cal_checksum(file_path)
         if file_data["checksum"] != checksum:
+            os.remove(encrypted_file_path)
+            os.remove(file_path)
             return Response({"status": "Checksum Verification Failed",},status=status.HTTP_200_OK)
 
         # Remove files from server
