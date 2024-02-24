@@ -158,3 +158,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     return cookieValue;
   }
+
+  function logout() {
+    window.location.href = '/account/logout/';
+  }

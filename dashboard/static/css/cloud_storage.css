@@ -228,3 +228,17 @@ body, html {
     line-height: 25px;
     text-decoration: none;;
 }
+
+#logoutBtn {
+    background-color: #b41010; /* Green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background-color: #f31616;
+}
