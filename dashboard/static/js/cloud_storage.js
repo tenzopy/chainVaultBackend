@@ -128,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function() {
             a.textContent = 'Click Me';
             const baseDiv = document.getElementById('downPass')
             baseDiv.appendChild(a)
-            document.getElementById('filePassword').value = '';
         }
         else {
             document.getElementById('msg1').innerHTML = '';
@@ -137,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
             b.style.color = 'red';
             const baseDiv = document.getElementById('downPass')
             baseDiv.appendChild(b)
-            document.getElementById('filePassword').value = '';
+            
 
         }
       });
@@ -146,6 +145,7 @@ document.addEventListener("DOMContentLoaded", function() {
       msg.innerHTML = "Fetching Data..";
       msg.style.color = "green";
       msg.style.display = "block";
+      document.getElementById('filePassword').value = '';
       // Close the password modal after processing
       //document.getElementById('passwordModal').style.display = 'none';
     });
