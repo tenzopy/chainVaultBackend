@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then((response) => response.json())
       .then((response) => { 
         if (response.status == 'ok') {
-            const msg = document.getElementById('msg');
+            var msg = document.getElementById('msg');
             msg.innerHTML = "File Uploaded !";
             msg.style.color = "green";
             msg.style.display = "block";
@@ -74,6 +74,10 @@ document.addEventListener("DOMContentLoaded", function() {
       });
   
       // Clear input fields after upload
+      var msg = document.getElementById('msg');
+      msg.innerHTML = "File is being Uploaded...";
+      msg.style.color = "green";
+      msg.style.display = "block";
       fileInput.value = '';
       passwordInput.value = '';
       // Close the upload modal after upload
@@ -116,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function() {
       .then((response) => response.json())
       .then((response) => { 
         if (response.status == 'ok') {
+            document.getElementById('msg1').innerHTML = '';
             var a = document.createElement('a');
             a.setAttribute('href', response.download_url);   
             a.download = filename;
@@ -126,6 +131,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('filePassword').value = '';
         }
         else {
+            document.getElementById('msg1').innerHTML = '';
             var b = document.createElement('h4');
             b.innerHTML = response.status;
             b.style.color = 'red';
@@ -135,7 +141,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         }
       });
-  
+      
+      var msg = document.getElementById('msg1');
+      msg.innerHTML = "Fetching Data..";
+      msg.style.color = "green";
+      msg.style.display = "block";
       // Close the password modal after processing
       //document.getElementById('passwordModal').style.display = 'none';
     });
@@ -146,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function() {
         this.closest('.modal').style.display = 'none';
         document.getElementById('downPass').innerHTML = '';
         document.getElementById('msg').innerHTML = '';
+        document.getElementById('msg1').innerHTML = '';
       });
     });
   });
