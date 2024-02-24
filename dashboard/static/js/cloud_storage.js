@@ -137,8 +137,8 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.close').forEach(function(closeBtn) {
       closeBtn.addEventListener('click', function() {
         this.closest('.modal').style.display = 'none';
-        document.getElementById('downPass').style.display = 'none';
-        document.getElementById('msg').style.display = 'none';
+        document.getElementById('downPass').innerHTML = '';
+        document.getElementById('msg').innerHTML = '';
       });
     });
   });
