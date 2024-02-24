@@ -1,0 +1,230 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    position: relative; /* Ensure relative positioning for absolute/fixed children */
+    display: flex;
+  }
+  
+  .left-panel {
+    position: fixed; /* Keep the left panel fixed */
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #024d94;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+  }
+  
+  .right-panel {
+    flex: 1;
+    padding: 20px;
+    margin-left: 300px; /* Adjust margin to match the width of the left panel */
+    overflow-y: auto; /* Allow the right panel content to scroll if needed */
+  }
+  
+  h1, h2, h3 {
+    margin-top: 0;
+  }
+  
+  .top-right {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .user-info, .storage-info {
+    margin-top: 20px;
+  }
+  
+  #fileList {
+    margin-top: 20px;
+  }
+  
+  .fileItem {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .fileItem:hover {
+    background-color: #e9e9e9;
+  }
+  
+  .fileItem a {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .fileItem a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Styles for the modal */
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark gray color */
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%; /* Set modal width to 40% of the viewport width */
+    height: 40%; /* Set modal height to 40% of the viewport height */
+    border-radius: 10px; /* Rounded corners */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+  }
+/* Styles for the modal close button */
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  /* Adjust the position of modal content */
+  .modal-content {
+    position: relative;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  /* Center the upload button */
+  .modal-content button {
+    align-self: center;
+  }
+  
+  /* Style for input fields */
+  .modal-content input[type="file"],
+  .modal-content input[type="password"] {
+    width: 100%; /* Make input fields width 100% */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .modal-content input[type="file"]:focus,
+  .modal-content input[type="password"]:focus {
+    outline: none;
+  }
+  
+  .modal-content button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-content button:hover {
+    background-color: #45a049; /* Darker Green */
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+/* Styles for the upload buttons */
+#uploadBtnLeft,
+#uploadBtnRight {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#uploadBtnLeft:hover,
+#uploadBtnRight:hover {
+  background-color: #45a049; /* Darker Green */
+}
+
+/* For screens smaller than 768px (typical smartphones) */
+/* For screens smaller than 768px (typical smartphones) */
+@media (max-width: 768px) {
+    .container {
+      flex-direction: column; /* Stack elements vertically */
+    }
+  
+    .left-panel, .right-panel {
+      position: static; /* Reset position */
+      width: auto; /* Reset width */
+      margin-left: 0; /* Reset margin */
+    }
+  
+    .right-panel {
+      padding: 20px;
+    }
+  
+    .modal-content {
+      width: 80%; /* Set modal width to 80% of viewport width */
+      height: auto; /* Allow height to adjust based on content */
+      margin: 15% auto; /* Center modal vertically */
+    }
+  
+    .close {
+      top: 5px; /* Adjust close button position */
+      right: 5px; /* Adjust close button position */
+    }
+  }
+
+#msg {
+    display: none;
+}
+
+#downButton {
+    display: block;
+    width: 115px;
+    height: 25px;
+    background: #000000;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+    text-decoration: none;;
+}

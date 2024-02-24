@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChainVault Cloud</title>
+  <link rel="stylesheet" href="{% static 'css/cloud_storage.css' %}">
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <h2>ChainVault</h2>
+      <div class="user-info">
+        <p>User: {{request.user.first_name}}</p>
+        <p>Email: {{request.user.email}}</p>
+      </div>
+      <div class="storage-info">
+        <h3>Storage Information</h3>
+        <p>Available Space: 10 GB</p>
+        <p>Used Space: 5 GB</p>
+      </div>
+      <button id="uploadBtnLeft">Upload File</button> <!-- Moved to bottom -->
+    </div>
+    <div class="right-panel">
+      <div class="top-right">
+        <h1>File Dashboard</h1>
+        <button id="uploadBtnRight">Upload File</button>
+      </div>
+      <div id="fileList">
+        {% if file_names %}
+            {% for i in file_names %}
+                <div class="fileItem" data-filename="{{i}}">{{i}}</div>
+            {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div id="uploadModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <span>
+      <h2>Upload File</h2>
+      <h4 id="msg"></h4>
+      <input type="file" id="fileInput" name="uploadFile">
+      <input type="password" name="password" id="passwordInput" placeholder="Enter Password">
+      <button id="uploadSubmitBtn">Upload</button>
+      </span>
+    </div>
+  </div>
+  <div id="passwordModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+        <h2 id="downMsg">Enter Password</h2>
+        <input type="password" name="password" id="filePassword" placeholder="Enter Password">
+        <button id="passwordSubmitBtn">Download</button><br><br>
+        <span id="downPass"> </span>
+    </div>
+  </div>
+  <script src="{% static 'js/cloud_storage.js' %}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+</html>

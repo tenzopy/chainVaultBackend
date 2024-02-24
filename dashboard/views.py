@@ -1,5 +1,9 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render,redirect
+from django.urls import reverse
 from django.conf import settings
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
 from django.core.files.storage import FileSystemStorage
 from blockchain.views import blockchain,merkle_tree
 from hash_table.views import DHT
@@ -15,13 +19,24 @@ fs = FileSystemStorage()
 media_list = MediaList()
 
 @login_required(login_url='home')
-def dash(request):
+def dashboard(request):
     return render(request,'dashboard.html')
 
+@login_required(login_url='home')
+def cloud(request):
+    user_data = DHT.retrieve_user(request.user.email)
+    if user_data == {} and DHT.request_user_from_neighbours(request.user.email):
+        user_data = DHT.retrieve_user(request.user.email)
+
+    context = {
+        "file_names" : list(user_data.keys())
+    }
+    return render(request, 'cloud_storage.html', context)
 
 @login_required(login_url='home')
+@api_view(['POST'])
 def upload(request):
-    if request.method == 'POST' and request.FILES['uploadFile']:
+    if request.FILES['uploadFile'] and request.POST.get('password')!= '':
         uploadFile, password = request.FILES['uploadFile'], request.POST.get('password')
 
         # Save the file locally.
@@ -56,16 +71,15 @@ def upload(request):
         os.remove(file_path)
         os.remove(encrypted_file_path)
 
-        return render(request, 'uploadz.html', {
-            'ipfs_cid' : ipfs_cid
-        })
+        return Response({"status" : "ok"},status=status.HTTP_200_OK)
     
-    return render(request, 'uploadz.html')
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @login_required(login_url='home')
+@api_view(['POST'])
 def download(request):
-    if request.method == 'POST':
+    if request.POST.get('file_name') != '' and request.POST.get('password') != '':
         file_name, password = request.POST.get('file_name'), request.POST.get('password')
 
         # Retreive File Data From DHT
@@ -85,9 +99,7 @@ def download(request):
 
         # Verify Merkle Hash
         if block["merkle_hash"] != merkle_hash:
-            return render(request, 'downloadz.html', {
-                "error" : "Merkle Hash Verification Failed."
-            })
+            return Response({"status": "Merkle Verification Failed",},status=status.HTTP_400_BAD_REQUEST)
 
         # Download from IPFS
         encrypted_file_name = randomName(6) + ".aes"
@@ -122,19 +134,7 @@ def download(request):
         os.remove(encrypted_file_path)
         media_list.add(file_path)
 
-        return render(request, 'downloadz.html', {
-            'download_url': fs.url(file_name)
-        })
-    
-    user_data = DHT.retrieve_user(request.user.email)
-    if user_data == {} and DHT.request_user_from_neighbours(request.user.email):
-        user_data = DHT.retrieve_user(request.user.email)
-        
-
-    context = {
-        "file_names" : list(user_data.keys())
-    }
-    return render(request, 'downloadz.html', context)
+        return Response({"status": "ok","download_url": fs.url(file_name)},status=status.HTTP_200_OK)
 
 def share(request):
     pass
