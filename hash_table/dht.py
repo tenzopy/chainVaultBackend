@@ -125,6 +125,20 @@ class distributedHashTable:
         except:
             print("Successor or predecessor is unavailable")
 
+    def store_remote_user(self,key: str,data: dict) -> bool:
+        if not self.does_user_exist(key):
+            self.data[key] = data
+            return True
+        return False
+
+    def store_remote_file(self, key: str, file_name: str, data: dict) -> bool:
+        if not self.does_user_exist(key):
+            self.add_user(key) 
+        if self.does_file_exist(key,file_name):
+            return False
+        self.data[key][file_name] = data
+        return True
+
     def store_user(self,key: str,data: dict) -> bool:
         if not self.does_user_exist(key):
             self.data[key] = data

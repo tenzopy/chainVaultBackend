@@ -25,7 +25,7 @@ def get_file(request):
 def post_file(request):
     data = request.data
     key,file_name,hash_data = data['key'],data['file_name'],data['data']
-    if DHT.store_file(key,file_name,hash_data):
+    if DHT.store_remote_file(key,file_name,hash_data):
         return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_409_CONFLICT)
 
@@ -33,7 +33,7 @@ def post_file(request):
 def post_userdata(request):
     data = request.data
     key, userdata = data['key'],data['data']
-    if DHT.store_user(key,userdata):
+    if DHT.store_remote_user(key,userdata):
         return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_409_CONFLICT)
 
