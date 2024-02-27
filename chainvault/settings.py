@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'hash_table',
     'db',
     'dashboard',
+    'ipfs',
     'django.contrib.sites',
     'allauth',
     'allauth.account',

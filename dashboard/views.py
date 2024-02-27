@@ -67,6 +67,9 @@ def upload(request):
         # Add to Distributed Hash Table
         DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], 'False', '', checksum, encrypted_checksum, ipfs_cid))
 
+        # Cache to Nearby IPFS
+        ipfs.broadcast_file(ipfs_cid)
+
         # Remove the files from server
         os.remove(file_path)
         os.remove(encrypted_file_path)
