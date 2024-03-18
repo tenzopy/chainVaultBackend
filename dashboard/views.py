@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from django.urls import reverse
 from django.conf import settings
 from rest_framework.response import Response
@@ -9,6 +9,7 @@ from blockchain.views import blockchain,merkle_tree
 from hash_table.views import DHT
 from ipfs.views import ipfs
 import pyAesCrypt
+import validators
 import os
 from .assets import *
 from django.contrib.auth.decorators import login_required
@@ -57,7 +58,7 @@ def upload(request):
         ipfs_cid = ipfs.upload_to_ipfs(encrypted_file_path)
 
         # Calculate merkle hash
-        _merkle_input = merkle_input(request.user.email, uploadFile.name, 'False', '', checksum, encrypted_checksum, ipfs_cid)
+        _merkle_input = merkle_input(request.user.email, uploadFile.name, 'False', '', '', checksum, encrypted_checksum, ipfs_cid)
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
         
@@ -65,7 +66,7 @@ def upload(request):
         block = blockchain.mine_block({"merkle_hash" : merkle_hash})
 
         # Add to Distributed Hash Table
-        DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], 'False', '', checksum, encrypted_checksum, ipfs_cid))
+        DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], 'False', '', '', checksum, encrypted_checksum, ipfs_cid))
 
         # Cache to Nearby IPFS
         ipfs.broadcast_file(ipfs_cid)
@@ -96,7 +97,7 @@ def download(request):
         block = blockchain.chain[block_index-1]
 
         # Calculate merkle hash
-        _merkle_input = merkle_input(request.user.email, file_name, file_data["shared"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
+        _merkle_input = merkle_input(request.user.email, file_name, file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
 
@@ -139,5 +140,59 @@ def download(request):
     
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
+@login_required(login_url='home')
+@api_view(['POST','GET'])
 def share(request):
-    pass
+    if request.method == 'POST' and request.POST.get('file_name') != '' and request.POST.get('password') != '' and validators.email(request.POST.get('receiver')):
+
+        # Retreiving Data
+        file_name = request.POST.get('file_name')
+        password = request.POST.get('password')
+        sender = request.user.email
+        receiver = request.POST.get('receiver')
+
+        # Retreive File Data From DHT
+        file_data = DHT.retrieve_file(sender, file_name)
+        if file_data == {} and DHT.request_file_from_neighbours(sender, file_name):
+            file_data = DHT.retrieve_file(sender, file_name)
+
+        # Retreive Blockchain
+        block_index = file_data["block_index"]
+        blockchain.replace_chain()
+        block = blockchain.chain[block_index-1]
+
+        # Calculate merkle hash
+        _merkle_input = merkle_input(sender, file_name, file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
+        merkle_tree.makeTreeFromArray(_merkle_input)
+        merkle_hash = merkle_tree.calculateMerkleRoot()
+
+        # Verify Merkle Hash
+        if block["merkle_hash"] != merkle_hash:
+            return Response({"status": "Merkle Verification Failed",},status=status.HTTP_200_OK)
+        
+        # Expand File Data
+        ipfs_cid = file_data['ipfs_cid']
+        checksum = file_data['checksum']
+        encrypted_checksum = file_data['encrypted_checksum']
+
+        # Calculate merkle hash
+        _merkle_input = merkle_input(receiver, file_name, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid)
+        merkle_tree.makeTreeFromArray(_merkle_input)
+        merkle_hash = merkle_tree.calculateMerkleRoot()
+        
+        # Add to Blockchain
+        block = blockchain.mine_block({"merkle_hash" : merkle_hash})
+
+        # Add to Distributed Hash Table (Receiver)
+        DHT.store_file(receiver, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
+
+        # Update Distributed Hash Table (Sender)
+        DHT.store_file(sender, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
+
+        # Cache to Nearby IPFS
+        ipfs.broadcast_file(ipfs_cid)
+
+
+        return HttpResponse(f"<h2>{file_name} {password}  {sender} {receiver} </h2>")
+
+    return render(request,'sharing.html')
