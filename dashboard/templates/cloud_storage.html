@@ -49,14 +49,24 @@
     </div>
   </div>
 
-  <div id="uploadModal" class="modal">
+  <div id="shareModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <h2>Upload File</h2>
+      <h2>Share File</h2>
       <h4 id="msg"></h4>
-      <input type="file" id="fileInput" name="uploadFile">
+      <h4 id="selected-file"></h4>
+        <select id="file-select" onchange="toggleUpload()">
+          <option value="">Choose a file</option>
+              {% if file_names %}
+                {% for i in file_names %}
+                  <option value="{{i}}">{{i}}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+      <br><h4>OR</h4><br>
+      <input type="file" id="fileInputShare" name="uploadFile" onchange="toggleSelect()"><br>
       <input type="password" name="password" id="passwordInput" placeholder="Enter Password">
-      <button id="uploadSubmitBtn">Upload</button>
+      <button id="uploadSubmitBtn">Share</button>
     </div>
   </div>
 

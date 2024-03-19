@@ -20,6 +20,11 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('uploadBtnLeft').addEventListener('click', function() {
       document.getElementById('uploadModal').style.display = 'block';
     });
+
+    // Handle click event on the share button in the left panel
+    document.getElementById('shareBtnLeft').addEventListener('click', function() {
+      document.getElementById('shareModal').style.display = 'block';
+    });
   
     // Handle click event on the upload button in the top right corner
     document.getElementById('uploadBtnRight').addEventListener('click', function() {
@@ -180,3 +185,29 @@ document.addEventListener("DOMContentLoaded", function() {
   function logout() {
     window.location.href = '/account/logout/';
   }
+
+  function toggleUpload() {
+    var fileSelect = document.getElementById('file-select');
+    var uploadFile = document.getElementById('fileInputShare');
+    var selectedFile = fileSelect.value;
+    
+    if (selectedFile !== '') {
+        uploadFile.disabled = true;
+    } else {
+        uploadFile.disabled = false;
+    }
+    document.getElementById('selected-file').innerText = 'File Name: ' + selectedFile;
+}
+
+function toggleSelect() {
+    var fileSelect = document.getElementById('file-select');
+    var uploadFile = document.getElementById('fileInputShare');
+    var uploadedFile = uploadFile.files[0].name;
+    
+    if (uploadedFile !== '') {
+        fileSelect.disabled = true;
+    } else {
+        fileSelect.disabled = false;
+    }
+    document.getElementById('selected-file').innerText = 'File Name: ' + uploadedFile;
+}
