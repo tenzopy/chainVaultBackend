@@ -155,6 +155,22 @@ class distributedHashTable:
         self.broadcast_filedata(key,file_name,data)
         return True
     
+    def update_user(self,key: str,data: dict) -> bool:
+        if self.does_user_exist(key):
+            self.data[key] = data
+            self.broadcast_userdata(key,data)
+            return True
+        return False
+    
+    def update_file(self, key: str, file_name: str, data: dict) -> bool:
+        if not self.does_user_exist(key):
+            self.add_user(key) 
+        if self.does_file_exist(key,file_name):
+            self.data[key][file_name] = data
+            self.broadcast_filedata(key,file_name,data)
+            return True
+        return False
+    
     def remove_file(self,key: str,file_name: str) -> bool:
         if self.does_user_exist(key) and self.does_file_exist(key,file_name):
             self.data[key].pop(file_name)

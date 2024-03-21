@@ -231,7 +231,7 @@ def share(request):
         DHT.store_file(receiver, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
 
         # Update Distributed Hash Table (Sender)
-        DHT.store_file(sender, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
+        DHT.update_file(sender, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
 
         # Cache to Nearby IPFS
         ipfs.broadcast_file(ipfs_cid)
