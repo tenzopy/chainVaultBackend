@@ -28,8 +28,6 @@ def cloud(request):
     user_data = DHT.retrieve_user(request.user.email)
     if user_data == {} and DHT.request_user_from_neighbours(request.user.email):
         user_data = DHT.retrieve_user(request.user.email)
-    for i in user_data:
-        print(i , "->", user_data[i])
     context = {
         "file" : user_data
     }

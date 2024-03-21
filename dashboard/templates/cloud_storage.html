@@ -60,8 +60,8 @@
       <h4 id="msg"></h4>
         <select id="file-select" onchange="toggleUpload()">
           <option value="">Choose a file</option>
-              {% if file_names %}
-                {% for i in file_names %}
+              {% if file %}
+                {% for i in file %}
                   <option value="{{i}}">{{i}}</option>
                 {% endfor %}
             {% endif %}
