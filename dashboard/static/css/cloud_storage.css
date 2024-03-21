@@ -123,7 +123,8 @@ body, html {
   
   /* Style for input fields */
   .modal-content input[type="file"],
-  .modal-content input[type="password"] {
+  .modal-content input[type="password"],
+  .modal-content input[type="email"] {
     width: 100%; /* Make input fields width 100% */
     padding: 10px;
     margin: 10px 0;
@@ -133,7 +134,8 @@ body, html {
   }
   
   .modal-content input[type="file"]:focus,
-  .modal-content input[type="password"]:focus {
+  .modal-content input[type="password"]:focus,
+  .modal-content input[type="email"]:focus {
     outline: none;
   }
   

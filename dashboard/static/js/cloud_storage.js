@@ -91,6 +91,9 @@ document.addEventListener("DOMContentLoaded", function() {
   
     // Handle click event on the upload button in the modal
     document.getElementById('uploadSubmitBtn').addEventListener('click', handleFileUpload);
+
+    // Handle click event on the upload button in the modal
+    document.getElementById('shareSubmitBtn').addEventListener('click', handleShare);
   
     // Handle click event on the submit button in the password modal
     document.getElementById('passwordSubmitBtn').addEventListener('click', function() {
@@ -165,6 +168,56 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   });
+
+  function handleShare() {
+    const fileInput = document.getElementById('fileInputShare');
+    const fileSelection = document.getElementById('file-select');
+    const passwordInput = document.getElementById('passwordShareInput');
+    const receiverInput = document.getElementById('receiver');
+    const file = fileInput.files[0];
+    const password = passwordInput.value;
+    const receiver = receiverInput.value;
+
+
+    // Check if a password is provided
+    if (!password) {
+      alert("Please enter a password.");
+      return;
+    }
+
+    // Perform file upload here
+
+    var csrftoken = getCookie('csrftoken');
+    const formData = new FormData;
+
+    if (!file) {
+      formData.append('file_name',fileSelection.value);
+    }
+    else {
+      formData.append('uploadFile',file);
+    }
+
+    formData.append('receiver',receiver);
+    formData.append('password',password);
+
+    const options = {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken
+        },
+        body: formData  
+    };
+    fetch(`/dashboard/share/`,options)
+      .then((response) => response.json())
+      .then((response) => { 
+        if (response.status == 'ok') {
+            alert('OK');
+
+        }
+      });
+
+  }
   
 
   function getCookie(name) {
@@ -196,7 +249,6 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         uploadFile.disabled = false;
     }
-    document.getElementById('selected-file').innerText = 'File Name: ' + selectedFile;
 }
 
 function toggleSelect() {
@@ -209,5 +261,4 @@ function toggleSelect() {
     } else {
         fileSelect.disabled = false;
     }
-    document.getElementById('selected-file').innerText = 'File Name: ' + uploadedFile;
 }
