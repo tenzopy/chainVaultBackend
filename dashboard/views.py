@@ -13,6 +13,8 @@ import validators
 import os
 from .assets import *
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 
 fs = FileSystemStorage()
@@ -235,6 +237,28 @@ def share(request):
 
         # Cache to Nearby IPFS
         ipfs.broadcast_file(ipfs_cid)
+        
+        # Send E-Mail with password to receiver   
+        Subject = "ChainVault, a file is shared with you."
+        HTML_Message = render_to_string('email_password.html', {
+
+        'receiver': receiver,
+        'password' : password,
+        'file_name' : file_name,
+        'sender' : sender, 
+
+        })
+
+        Plain_Message = render_to_string('email_password_plain.html', {
+
+        'receiver': receiver,
+        'password' : password,
+        'file_name' : file_name,
+        'sender' : sender, 
+
+        })
+
+        send_mail(Subject, Plain_Message, from_email="noreply@sliceit.me", recipient_list=[receiver], html_message=HTML_Message, fail_silently=True)
 
 
         return Response({"status":"ok"},status=status.HTTP_200_OK)

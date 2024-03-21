@@ -198,3 +198,11 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 CSRF_TRUSTED_ORIGINS = [os.environ.get("CSRF_TRUSTED_ORIGIN")]
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+
+# E-Mail Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'live.smtp.mailtrap.io'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'api'
+EMAIL_HOST_PASSWORD = '1ca7a51fc336d7bf51798d34e2507634'
+EMAIL_PORT = '587'
