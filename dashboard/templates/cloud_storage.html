@@ -30,9 +30,13 @@
         <button id="uploadBtnRight">Upload File</button>
       </div>
       <div id="fileList">
-        {% if file_names %}
-            {% for i in file_names %}
-                <div class="fileItem" data-filename="{{i}}">{{i}}</div>
+        {% if file %}
+            {% for key,value in file.items %}
+                {% if value.shared == 'True' %}
+                  <div class="fileItem" data-filename="{{key}}"><p>{{key}}&emsp;(SHARED)&emsp;SENDER:{{value.sender}}&emsp;RECEIVER:{{value.receiver}}</p></div>
+                {% else %}
+                <div class="fileItem" data-filename="{{key}}"><p>{{key}}</p></div>
+                {% endif %}
             {% endfor %}
         {% endif %}
       </div>
