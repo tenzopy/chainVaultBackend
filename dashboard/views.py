@@ -36,7 +36,7 @@ def cloud(request):
 @login_required(login_url='home')
 @api_view(['POST'])
 def upload(request):
-    if request.FILES['uploadFile'] and request.POST.get('password')!= '':
+    if request.FILES.get('uploadFile',False) and request.POST.get('password')!= '':
         uploadFile, password = request.FILES['uploadFile'], request.POST.get('password')
 
         # Save the file locally.
@@ -150,9 +150,9 @@ def share(request):
         sender = request.user.email
         receiver = request.POST.get('receiver')
 
-        if request.FILES['uploadShareFile']:
+        if request.FILES.get('uploadFile',False):
 
-            uploadFile, password = request.FILES['uploadShareFile'], request.POST.get('password')
+            uploadFile, password = request.FILES['uploadFile'], request.POST.get('password')
 
             # Save the file locally.
             filename = fs.save(uploadFile.name, uploadFile)
