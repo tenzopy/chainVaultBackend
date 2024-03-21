@@ -202,7 +202,7 @@ class distributedHashTable:
     def update_user(self,key: str,data: dict) -> bool:
         if self.does_user_exist(key):
             self.data[key] = data
-            self.broadcast_userdata(key,data)
+            self.broadcast_userdata_updation(key,data)
             return True
         return False
     
@@ -211,7 +211,7 @@ class distributedHashTable:
             self.add_user(key) 
         if self.does_file_exist(key,file_name):
             self.data[key][file_name] = data
-            self.broadcast_filedata(key,file_name,data)
+            self.broadcast_filedata_updation(key,file_name,data)
             return True
         return False
     
