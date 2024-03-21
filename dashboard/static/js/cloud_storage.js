@@ -165,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('downPass').innerHTML = '';
         document.getElementById('msg').innerHTML = '';
         document.getElementById('msg1').innerHTML = '';
+        document.getElementById('msgShare').innerHTML = '';
       });
     });
   });
@@ -212,10 +213,21 @@ document.addEventListener("DOMContentLoaded", function() {
       .then((response) => response.json())
       .then((response) => { 
         if (response.status == 'ok') {
-            alert('OK');
-
+          var msg = document.getElementById('msgShare');
+          msg.innerHTML = "File Shared !";
+          msg.style.color = "green";
+          msg.style.display = "block";
         }
       });
+
+      var msg = document.getElementById('msgShare');
+      msg.innerHTML = "Sharing Your File";
+      msg.style.color = "green";
+      msg.style.display = "block";
+      fileInput.value = '';
+      passwordInput.value = '';
+      fileSelection.value = '';
+      receiverInput.value = '';
 
   }
   

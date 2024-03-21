@@ -145,56 +145,98 @@ def share(request):
 
     if request.method == 'POST' and request.POST.get('password') != '' and validators.email(request.POST.get('receiver')):
 
-        if request.POST.get('file_name')!= None:
+        # Retreiving Data
+        password = request.POST.get('password')
+        sender = request.user.email
+        receiver = request.POST.get('receiver')
 
-            # Retreiving Data
-            file_name = request.POST.get('file_name')
-            password = request.POST.get('password')
-            sender = request.user.email
-            receiver = request.POST.get('receiver')
+        if request.FILES['uploadFile']:
 
-            # Retreive File Data From DHT
-            file_data = DHT.retrieve_file(sender, file_name)
-            if file_data == {} and DHT.request_file_from_neighbours(sender, file_name):
-                file_data = DHT.retrieve_file(sender, file_name)
+            uploadFile, password = request.FILES['uploadFile'], request.POST.get('password')
 
-            # Retreive Blockchain
-            block_index = file_data["block_index"]
-            blockchain.replace_chain()
-            block = blockchain.chain[block_index-1]
+            # Save the file locally.
+            filename = fs.save(uploadFile.name, uploadFile)
 
-            # Calculate merkle hash
-            _merkle_input = merkle_input(sender, file_name, file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
-            merkle_tree.makeTreeFromArray(_merkle_input)
-            merkle_hash = merkle_tree.calculateMerkleRoot()
+            # Calculate Checksum
+            file_path = os.path.join(settings.MEDIA_ROOT,filename)
+            checksum = cal_checksum(file_path)
 
-            # Verify Merkle Hash
-            if block["merkle_hash"] != merkle_hash:
-                return Response({"status": "Merkle Verification Failed",},status=status.HTTP_200_OK)
+            # AES Encryption
+            encrypted_file_path = os.path.join(settings.MEDIA_ROOT, randomName(6) + ".aes")
+            pyAesCrypt.encryptFile(file_path, encrypted_file_path, password)
+
+            # Calculate Encrypted Checksum
+            encrypted_checksum = cal_checksum(encrypted_file_path)
             
-            # Expand File Data
-            ipfs_cid = file_data['ipfs_cid']
-            checksum = file_data['checksum']
-            encrypted_checksum = file_data['encrypted_checksum']
+            # Upload to IPFS
+            ipfs_cid = ipfs.upload_to_ipfs(encrypted_file_path)
 
             # Calculate merkle hash
-            _merkle_input = merkle_input(receiver, file_name, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid)
+            _merkle_input = merkle_input(request.user.email, uploadFile.name, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid)
             merkle_tree.makeTreeFromArray(_merkle_input)
             merkle_hash = merkle_tree.calculateMerkleRoot()
             
             # Add to Blockchain
             block = blockchain.mine_block({"merkle_hash" : merkle_hash})
 
-            # Add to Distributed Hash Table (Receiver)
-            DHT.store_file(receiver, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
-
-            # Update Distributed Hash Table (Sender)
-            DHT.store_file(sender, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
+            # Add to Distributed Hash Table
+            DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], 'True', request.user.email, request.POST.get('receiver'), checksum, encrypted_checksum, ipfs_cid))
 
             # Cache to Nearby IPFS
             ipfs.broadcast_file(ipfs_cid)
 
+            # Remove the files from server
+            os.remove(file_path)
+            os.remove(encrypted_file_path)
 
-            return Response({"status":"ok"},status=status.HTTP_200_OK)
+
+        if request.POST.get('file_name')!= None:
+            file_name = request.POST.get('file_name')
+        else:
+            file_name = uploadFile.name
+
+        # Retreive File Data From DHT
+        file_data = DHT.retrieve_file(sender, file_name)
+        if file_data == {} and DHT.request_file_from_neighbours(sender, file_name):
+            file_data = DHT.retrieve_file(sender, file_name)
+
+        # Retreive Blockchain
+        block_index = file_data["block_index"]
+        blockchain.replace_chain()
+        block = blockchain.chain[block_index-1]
+
+        # Calculate merkle hash
+        _merkle_input = merkle_input(sender, file_name, file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
+        merkle_tree.makeTreeFromArray(_merkle_input)
+        merkle_hash = merkle_tree.calculateMerkleRoot()
+
+        # Verify Merkle Hash
+        if block["merkle_hash"] != merkle_hash:
+            return Response({"status": "Merkle Verification Failed",},status=status.HTTP_200_OK)
+        
+        # Expand File Data
+        ipfs_cid = file_data['ipfs_cid']
+        checksum = file_data['checksum']
+        encrypted_checksum = file_data['encrypted_checksum']
+
+        # Calculate merkle hash
+        _merkle_input = merkle_input(receiver, file_name, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid)
+        merkle_tree.makeTreeFromArray(_merkle_input)
+        merkle_hash = merkle_tree.calculateMerkleRoot()
+        
+        # Add to Blockchain
+        block = blockchain.mine_block({"merkle_hash" : merkle_hash})
+
+        # Add to Distributed Hash Table (Receiver)
+        DHT.store_file(receiver, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
+
+        # Update Distributed Hash Table (Sender)
+        DHT.store_file(sender, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
+
+        # Cache to Nearby IPFS
+        ipfs.broadcast_file(ipfs_cid)
+
+
+        return Response({"status":"ok"},status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
