@@ -150,9 +150,9 @@ def share(request):
         sender = request.user.email
         receiver = request.POST.get('receiver')
 
-        if request.FILES['uploadFile']:
+        if request.FILES['uploadShareFile']:
 
-            uploadFile, password = request.FILES['uploadFile'], request.POST.get('password')
+            uploadFile, password = request.FILES['uploadShareFile'], request.POST.get('password')
 
             # Save the file locally.
             filename = fs.save(uploadFile.name, uploadFile)

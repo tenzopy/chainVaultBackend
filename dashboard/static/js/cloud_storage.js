@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function() {
       formData.append('file_name',fileSelection.value);
     }
     else {
-      formData.append('uploadFile',file);
+      formData.append('uploadShareFile',file);
     }
 
     formData.append('receiver',receiver);
