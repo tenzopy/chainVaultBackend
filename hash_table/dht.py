@@ -125,6 +125,36 @@ class distributedHashTable:
         except:
             print("Successor or predecessor is unavailable")
 
+    def broadcast_filedata_updation(self,key: str, file_name: str, data: dict) -> None:
+        try:
+            json_data = {
+                "key" : key,
+                "file_name" : file_name,
+                "data" : data
+            }
+            url_successor = f"https://{self.successor}/hashtable/update_file"  
+            requests.post(url_successor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt')  
+
+            url_predecessor = f"https://{self.predecessor}/hashtable/update_file"  
+            requests.post(url_predecessor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt') 
+        except:
+            print("Successor or predecessor is unavailable")
+
+
+    def broadcast_userdata_updation(self,key: str,data: dict) -> None:
+        try:
+            json_data = {
+                "key" : key,
+                "data" : data
+            }
+            url_successor = f"https://{self.successor}/hashtable/update_userdata"  
+            requests.post(url_successor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt')  
+
+            url_predecessor = f"https://{self.predecessor}/hashtable/update_userdata"  
+            requests.post(url_predecessor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt') 
+        except:
+            print("Successor or predecessor is unavailable")
+
     def store_remote_user(self,key: str,data: dict) -> bool:
         if not self.does_user_exist(key):
             self.data[key] = data
@@ -138,6 +168,20 @@ class distributedHashTable:
             return False
         self.data[key][file_name] = data
         return True
+    
+    def update_remote_user(self,key: str,data: dict) -> bool:
+        if self.does_user_exist(key):
+            self.data[key] = data
+            return True
+        return False
+
+    def update_remote_file(self, key: str, file_name: str, data: dict) -> bool:
+        if not self.does_user_exist(key):
+            self.add_user(key) 
+        if self.does_file_exist(key,file_name):
+            self.data[key][file_name] = data
+            return True
+        return False
 
     def store_user(self,key: str,data: dict) -> bool:
         if not self.does_user_exist(key):
