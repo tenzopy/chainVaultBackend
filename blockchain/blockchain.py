@@ -129,6 +129,7 @@ class Blockchain:
                 response = requests.get(f'https://{node}/blockchain/get/',timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
             except:
                 print(f"{node} is unavailable")
+                continue
             if response.status_code == 200:
                 chain = response.json()
                 length = len(chain)
