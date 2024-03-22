@@ -28,6 +28,7 @@ def dashboard(request):
 @login_required(login_url='home')
 def cloud(request):
     user_data = DHT.retrieve_user(request.user.email)
+    blockchain.replace_chain()
     if user_data == {} and DHT.request_user_from_neighbours(request.user.email):
         user_data = DHT.retrieve_user(request.user.email)
     context = {
