@@ -105,8 +105,8 @@ document.addEventListener("DOMContentLoaded", function() {
     // Handle click event on the submit button in the password modal
     document.getElementById('passwordSubmitBtn').addEventListener('click', function() {
       const filename = document.getElementById('passwordModal').getAttribute('data-filename');
-      const password = document.getElementById('filePassword').value;
       const passwordVerifier = document.getElementById('filePassword')
+      const password = passwordVerifier.value;
       // Perform your password validation here
       // For demonstration, simply log the filename and password
       
@@ -115,7 +115,10 @@ document.addEventListener("DOMContentLoaded", function() {
         passwordVerifier.setCustomValidity("");
       } else {
         passwordVerifier.setCustomValidity("Password should contain 8-15 characters and lowerCase,upperCase,numericals & special characters.");
-        passwordVerifier.reportValidity()
+        passwordVerifier.reportValidity();
+        passwordVerifier.addEventListener("input",function(){
+          passwordVerifier.setCustomValidity("");
+        })
         return;
       }
       
@@ -198,7 +201,10 @@ document.addEventListener("DOMContentLoaded", function() {
         passwordInput.setCustomValidity("");
       } else {
         passwordInput.setCustomValidity("Password should contain 8-15 characters and lowerCase,upperCase,numericals & special characters.");
-        passwordInput.reportValidity()
+        passwordInput.reportValidity();
+        passwordInput.addEventListener("input",function(){
+          passwordInput.setCustomValidity("");
+        })
         return;
       }
 
