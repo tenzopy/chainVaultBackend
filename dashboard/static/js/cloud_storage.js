@@ -116,9 +116,6 @@ document.addEventListener("DOMContentLoaded", function() {
       } else {
         passwordVerifier.setCustomValidity("Password should contain 8-15 characters and lowerCase,upperCase,numericals & special characters.");
         passwordVerifier.reportValidity()
-        passwordVerifier.addEventListener("input",function(){
-          passwordVerifier.setCustomValidity("");
-        })
         return;
       }
       
@@ -202,9 +199,6 @@ document.addEventListener("DOMContentLoaded", function() {
       } else {
         passwordInput.setCustomValidity("Password should contain 8-15 characters and lowerCase,upperCase,numericals & special characters.");
         passwordInput.reportValidity()
-        passwordInput.addEventListener("input",function(){
-          passwordInput.setCustomValidity("");
-        })
         return;
       }
 
