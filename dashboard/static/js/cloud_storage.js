@@ -45,8 +45,15 @@ document.addEventListener("DOMContentLoaded", function() {
       }
   
       // Check if a password is provided
-      if (!password) {
-        alert("Please enter a password.");
+      var lowerUpperNumberSpclLetters = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+      if (passwordInput.value.match(lowerUpperNumberSpclLetters)) {
+        passwordInput.setCustomValidity("");
+      } else {
+        passwordInput.setCustomValidity("Password should contain 8-15 characters and lowerCase,upperCase,numericals & special characters.");
+        passwordInput.reportValidity();
+        passwordInput.addEventListener("input",function(){
+          passwordInput.setCustomValidity("");
+        })
         return;
       }
   
@@ -99,14 +106,22 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('passwordSubmitBtn').addEventListener('click', function() {
       const filename = document.getElementById('passwordModal').getAttribute('data-filename');
       const password = document.getElementById('filePassword').value;
-  
+      const passwordVerifier = document.getElementById('filePassword')
       // Perform your password validation here
       // For demonstration, simply log the filename and password
-
-      if (!password) {
-        alert("Please enter a password.");
+      
+      var lowerUpperNumberSpclLetters = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+      if (passwordVerifier.value.match(lowerUpperNumberSpclLetters)) {
+        passwordVerifier.setCustomValidity("");
+      } else {
+        passwordVerifier.setCustomValidity("Password should contain 8-15 characters and lowerCase,upperCase,numericals & special characters.");
+        passwordVerifier.reportValidity()
+        passwordVerifier.addEventListener("input",function(){
+          passwordVerifier.setCustomValidity("");
+        })
         return;
       }
+      
   
       // Perform file upload here
 
@@ -181,10 +196,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // Check if a password is provided
-    if (!password) {
-      alert("Please enter a password.");
-      return;
-    }
+    var lowerUpperNumberSpclLetters = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+      if (passwordInput.value.match(lowerUpperNumberSpclLetters)) {
+        passwordInput.setCustomValidity("");
+      } else {
+        passwordInput.setCustomValidity("Password should contain 8-15 characters and lowerCase,upperCase,numericals & special characters.");
+        passwordInput.reportValidity()
+        passwordInput.addEventListener("input",function(){
+          passwordInput.setCustomValidity("");
+        })
+        return;
+      }
 
     // Perform file upload here
 
@@ -274,3 +296,4 @@ function toggleSelect() {
         fileSelect.disabled = false;
     }
 }
+
