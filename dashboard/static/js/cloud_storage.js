@@ -2,17 +2,30 @@ document.addEventListener("DOMContentLoaded", function() {
     const fileItems = document.querySelectorAll('.fileItem');
   
     // Function to handle file item click
-    function handleFileItemClick(filename) {
+    function handleFileItemClick(filename, shared, sender, receiver) {
       document.getElementById('passwordModal').style.display = 'block';
       // Pass filename to the password modal for reference
       document.getElementById('passwordModal').setAttribute('data-filename', filename);
+      if (shared == "False"){
+        document.getElementById('msgfile').innerHTML = "Filename : "+ filename;
+      }
+      else if (sender == 'none') {
+        document.getElementById('msgfile').innerHTML = "Filename : "+filename+"<br>Sent to : "+receiver;
+      }
+      else {
+        document.getElementById('msgfile').innerHTML = "Filename : "+filename+"<br>Received From : "+sender;
+      }
+      
     }
   
     // Add click event listener to file items
     fileItems.forEach(function(fileItem) {
       fileItem.addEventListener('click', function() {
         const filename = this.dataset.filename;
-        handleFileItemClick(filename);
+        const sender = this.dataset.sender;
+        const receiver = this.dataset.receiver;
+        const shared = this.dataset.shared;
+        handleFileItemClick(filename, shared, sender, receiver);
       });
     });
   

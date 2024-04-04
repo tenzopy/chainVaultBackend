@@ -33,9 +33,13 @@
         {% if file %}
             {% for key,value in file.items %}
                 {% if value.shared == 'True' %}
-                  <div class="fileItem" data-filename="{{key}}"><p>{{key}}&emsp;(SHARED)&emsp;SENDER:{{value.sender}}&emsp;RECEIVER:{{value.receiver}}</p></div>
+                  {% if value.sender == request.user.email %}
+                    <div class="fileItem" data-filename="{{key}}" data-shared="True" data-sender="none" data-receiver="{{value.receiver}}"><p>{{key}}&emsp;(SHARED)</p></div>
+                  {% else %}
+                    <div class="fileItem" data-filename="{{key}}" data-shared="True" data-sender="value.sender" data-receiver="none"><p>{{key}}&emsp;(SHARED)</p></div>
+                  {% endif %}
                 {% else %}
-                <div class="fileItem" data-filename="{{key}}"><p>{{key}}</p></div>
+                <div class="fileItem" data-filename="{{key}}" data-shared="False"><p>{{key}}</p></div>
                 {% endif %}
             {% endfor %}
         {% endif %}
@@ -77,6 +81,8 @@
   <div id="passwordModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
+        <h2 id="downMsg">File Information</h2>
+        <h4 id="msgfile"></h4>
         <h2 id="downMsg">Download File</h2>
         <h4 id="msg1"></h4>
         <input type="password" name="password" id="filePassword" placeholder="Enter Password">
