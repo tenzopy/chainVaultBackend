@@ -17,11 +17,19 @@ class distributedHashTable:
             response = requests.get(f'https://{self.successor}/hashtable/get_dht', timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
             if response.status_code == 200:
                 for key,value in response.json().items():
-                    print(key,value)
-
-                    
+                    if not self.does_user_exist(key):
+                        self.data[key] = value         
         except:
             print(f"{self.successor} is unavailable.")
+
+        try:
+            response = requests.get(f'https://{self.predecessor}/hashtable/get_dht', timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
+            if response.status_code == 200:
+                for key,value in response.json().items():
+                    if not self.does_user_exist(key):
+                        self.data[key] = value       
+        except:
+            print(f"{self.predecessor} is unavailable.")
     
     def hash_key(self, key: str) -> str:
         return hashlib.sha256(key.encode()).hexdigest()
