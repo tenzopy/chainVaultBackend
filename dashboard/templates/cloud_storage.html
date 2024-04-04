@@ -36,7 +36,7 @@
                   {% if value.sender == request.user.email %}
                     <div class="fileItem" data-filename="{{key}}" data-shared="True" data-sender="none" data-receiver="{{value.receiver}}"><p>{{key}}&emsp;(SHARED)</p></div>
                   {% else %}
-                    <div class="fileItem" data-filename="{{key}}" data-shared="True" data-sender="value.sender" data-receiver="none"><p>{{key}}&emsp;(SHARED)</p></div>
+                    <div class="fileItem" data-filename="{{key}}" data-shared="True" data-sender="{{value.sender}}" data-receiver="none"><p>{{key}}&emsp;(SHARED)</p></div>
                   {% endif %}
                 {% else %}
                 <div class="fileItem" data-filename="{{key}}" data-shared="False"><p>{{key}}</p></div>
