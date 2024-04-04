@@ -13,6 +13,15 @@ class distributedHashTable:
         self.ip = ip
         self.successor = self.get_successor()
         self.predecessor = self.get_predecessor()
+        try:
+            response = requests.get(f'https://{self.successor}/hashtable/get_dht', timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
+            if response.status_code == 200:
+                for key,value in response.json().items():
+                    print(key,value)
+
+                    
+        except:
+            print(f"{self.successor} is unavailable.")
     
     def hash_key(self, key: str) -> str:
         return hashlib.sha256(key.encode()).hexdigest()

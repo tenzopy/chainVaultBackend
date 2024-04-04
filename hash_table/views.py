@@ -69,3 +69,7 @@ def delete_file(request):
     if DHT.remove_file(key,file_name):
         return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_dht(request):
+    return Response(DHT.data, status=status.HTTP_200_OK)
