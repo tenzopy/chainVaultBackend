@@ -1,33 +1,4 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const fileItems = document.querySelectorAll('.fileItem');
-  
-    // Function to handle file item click
-    function handleFileItemClick(filename, shared, sender, receiver) {
-      document.getElementById('passwordModal').style.display = 'block';
-      // Pass filename to the password modal for reference
-      document.getElementById('passwordModal').setAttribute('data-filename', filename);
-      if (shared == "False"){
-        document.getElementById('msgfile').innerHTML = "Filename : "+ filename;
-      }
-      else if (sender == 'none') {
-        document.getElementById('msgfile').innerHTML = "Filename : "+filename+"<br>Sent to : "+receiver;
-      }
-      else {
-        document.getElementById('msgfile').innerHTML = "Filename : "+filename+"<br>Received From : "+sender;
-      }
-      
-    }
-  
-    // Add click event listener to file items
-    fileItems.forEach(function(fileItem) {
-      fileItem.addEventListener('click', function() {
-        const filename = this.dataset.filename;
-        const sender = this.dataset.sender;
-        const receiver = this.dataset.receiver;
-        const shared = this.dataset.shared;
-        handleFileItemClick(filename, shared, sender, receiver);
-      });
-    });
   
     // Handle click event on the upload button in the left panel
     document.getElementById('uploadBtnLeft').addEventListener('click', function() {
@@ -310,3 +281,34 @@ function toggleSelect() {
     }
 }
 
+function deleteFile(button) {
+  const filename = button.dataset.filename;
+  alert("Njan cheytholam");
+  // var fileItem = button.parentElement;
+  // fileItem.remove();
+}
+
+  
+// Function to handle file item click
+function handleFileItemClick(filename, shared, sender, receiver) {
+  document.getElementById('passwordModal').style.display = 'block';
+  // Pass filename to the password modal for reference
+  document.getElementById('passwordModal').setAttribute('data-filename', filename);
+  if (shared == "False"){
+    document.getElementById('msgfile').innerHTML = "Filename : "+ filename;
+  }
+  else if (sender == 'none') {
+    document.getElementById('msgfile').innerHTML = "Filename : "+filename+"<br>Sent to : "+receiver;
+  }
+  else {
+    document.getElementById('msgfile').innerHTML = "Filename : "+filename+"<br>Received From : "+sender;
+  }
+  
+}
+function Downloadz(buttonz) {
+  const filename = buttonz.dataset.filename;
+  const sender = buttonz.dataset.sender;
+  const receiver = buttonz.dataset.receiver;
+  const shared = buttonz.dataset.shared;
+  handleFileItemClick(filename, shared, sender, receiver);
+}
