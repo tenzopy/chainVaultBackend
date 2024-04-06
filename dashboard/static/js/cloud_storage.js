@@ -290,7 +290,7 @@ function deleteFile(button) {
 
     const options = {
         credentials: 'include',
-        method: 'POST',
+        method: 'DELETE',
         headers: {
           'X-CSRFToken': csrftoken
         },
