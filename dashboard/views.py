@@ -265,3 +265,13 @@ def share(request):
         return Response({"status":"ok"},status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@login_required(login_url='home')
+@api_view(['DELETE'])
+def delete(request):
+    if request.POST.get('file_name') != '':
+        file_name = request.POST.get('file_name')
+        DHT.remove_file(request.user.email,file_name)
+        return Response({"status":"ok"},status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)

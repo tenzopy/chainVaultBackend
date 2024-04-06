@@ -283,10 +283,32 @@ function toggleSelect() {
 
 function deleteFile(button) {
   const filename = button.dataset.filename;
-  alert("Njan cheytholam");
+  var csrftoken = getCookie('csrftoken');
+    const formData = new FormData;
+
+    formData.append('file_name',filename);
+
+    const options = {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken
+        },
+        body: formData  
+    };
+    fetch(`/dashboard/delete/`,options)
+      .then((response) => response.json())
+      .then((response) => { 
+        if (response.status == 'ok') {
+          alert("File Deleted")
+        }
+      });
+
+      alert("Delete Initated")
+
+  }
   // var fileItem = button.parentElement;
   // fileItem.remove();
-}
 
   
 // Function to handle file item click
