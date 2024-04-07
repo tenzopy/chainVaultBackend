@@ -187,6 +187,20 @@ body, html {
   background-color: #45a049; /* Darker Green */
 }
 
+#fetchBtnRight {
+  background-color: black; /* Green */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#fetchBtnRight:hover {
+  background-color: #4c504c; /* Darker Green */
+}
+
 #shareBtnLeft {
   background-color: #131413; /* Green */
   color: white;

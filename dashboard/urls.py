@@ -7,5 +7,5 @@ urlpatterns = [
     path('upload/',upload, name="upload"),
     path('download/',download, name="download"),
     path('share/',share),
-    path('delete',delete),
+    path('delete/',delete),
 ]
