@@ -37,12 +37,12 @@
             {% for key,value in file.items %}
                 {% if value.shared == 'True' %}
                   {% if value.sender == request.user.email %}
-                    <div class="fileItem"><p>{{key}}&emsp;(SHARED)</p><div><button class="download-btn" data-filename="{{key}}" data-shared="True" data-sender="none" data-receiver="{{value.receiver}}" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;<button class="delete-btn" data-filename="{{key}}" onclick="deleteFile(this)">Delete</button></div></div>
+                    <div class="fileItem"><p>{{key}}&emsp;(SHARED)</p><div><button class="download-btn" data-filename="{{key}}" data-shared="True" data-sender="none" data-receiver="{{value.receiver}}" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;<button class="download-btn" data-filename="{{key}}" data-shared="True" data-sender="none" data-receiver="{{value.receiver}}" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;<button class="delete-btn" data-filename="{{key}}" onclick="deleteFile(this)">Delete</button></div></div>
                   {% else %}
-                    <div class="fileItem"><p>{{key}}&emsp;(SHARED)</p><div><button class="download-btn" data-filename="{{key}}" data-shared="True" data-sender="value.sender" data-receiver="none" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;<button class="delete-btn" data-filename="{{key}}" onclick="deleteFile(this)">Delete</button></div></div>
+                    <div class="fileItem"><p>{{key}}&emsp;(SHARED)</p><div><button class="download-btn" data-filename="{{key}}" data-shared="True" data-sender="{{value.sender}}" data-receiver="none" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;<button class="download-btn" data-filename="{{key}}" data-shared="True" data-sender="{{value.sender}}" data-receiver="none" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;<button class="delete-btn" data-filename="{{key}}" onclick="deleteFile(this)">Delete</button></div></div>
                   {% endif %}
                 {% else %}
-                <div class="fileItem"><p>{{key}}</p><div><button class="download-btn" data-filename="{{key}}" data-shared="False" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;<button class="delete-btn" data-filename="{{key}}" onclick="deleteFile(this)">Delete</button></div></div>
+                <div class="fileItem"><p>{{key}}</p><div><button class="download-btn" data-filename="{{key}}" data-shared="False" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;<button class="download-btn" data-filename="{{key}}" data-shared="False" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;<button class="delete-btn" data-filename="{{key}}" onclick="deleteFile(this)">Delete</button></div></div>
                 {% endif %}
             {% endfor %}
         {% endif %}
@@ -85,13 +85,18 @@
   <div id="passwordModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-        <h2 id="downMsg">File Information</h2>
-        <h4 id="msgfile"></h4>
         <h2 id="downMsg">Download File</h2>
         <h4 id="msg1"></h4>
         <input type="password" name="password" id="filePassword" placeholder="Enter Password">
         <button id="passwordSubmitBtn">Download</button><br><br>
         <span id="downPass"> </span>
+    </div>
+  </div>
+  <div id="infoModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+        <h2 id="downMsg">File Information</h2>
+        <h4 id="msgfile"></h4>
     </div>
   </div>
   <script src="{% static 'js/cloud_storage.js' %}"></script>

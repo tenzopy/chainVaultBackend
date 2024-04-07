@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const passwordInput = document.getElementById('passwordInput');
       const file = fileInput.files[0];
       const password = passwordInput.value;
+      const fileName = file.name;
   
       // Check if a file is selected
       if (!file) {
@@ -65,6 +66,19 @@ document.addEventListener("DOMContentLoaded", function() {
             msg.innerHTML = "File Uploaded !";
             msg.style.color = "green";
             msg.style.display = "block";
+
+            var existingDiv = document.getElementById('fileList');
+
+            var newDiv = document.createElement('div');
+            newDiv.className = 'fileItem'; 
+            newDiv.innerHTML = '<p>'+fileName+'</p>' + 
+                              '<div>' +
+                              '<button class="download-btn" data-filename="'+fileName+'" data-shared="False" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;' +
+                              '<button class="download-btn" data-filename="'+fileName+'" data-shared="False" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;' +
+                              '<button class="delete-btn" data-filename="'+fileName+'" onclick="deleteFile(this)">Delete</button>' +
+                              '</div>';
+
+            existingDiv.appendChild(newDiv);
 
         }
       });
@@ -300,15 +314,15 @@ function deleteFile(button) {
       .then((response) => response.json())
       .then((response) => { 
         if (response.status == 'ok') {
-          alert("File Deleted")
+           var delItem = button.parentElement.parentElement;
+           delItem.remove();
         }
       });
 
-      alert("Delete Initated")
+      // alert("Delete Initated")
 
   }
-  // var fileItem = button.parentElement;
-  // fileItem.remove();
+
 
   
 // Function to handle file item click
@@ -333,4 +347,27 @@ function Downloadz(buttonz) {
   const receiver = buttonz.dataset.receiver;
   const shared = buttonz.dataset.shared;
   handleFileItemClick(filename, shared, sender, receiver);
+}
+
+function fileInfoClick(filename, shared, sender, receiver) {
+  document.getElementById('infoModal').style.display = 'block';
+  // Pass filename to the password modal for reference
+  document.getElementById('infoModal').setAttribute('data-filename', filename);
+  if (shared == "False"){
+    document.getElementById('msgfile').innerHTML = "Filename : "+ filename;
+  }
+  else if (sender == 'none') {
+    document.getElementById('msgfile').innerHTML = "Filename : "+filename+"<br>Sent to : "+receiver;
+  }
+  else {
+    document.getElementById('msgfile').innerHTML = "Filename : "+filename+"<br>Received From : "+sender;
+  }
+  
+}
+function fileInfo(buttonz) {
+  const filename = buttonz.dataset.filename;
+  const sender = buttonz.dataset.sender;
+  const receiver = buttonz.dataset.receiver;
+  const shared = buttonz.dataset.shared;
+  fileInfoClick(filename, shared, sender, receiver);
 }
