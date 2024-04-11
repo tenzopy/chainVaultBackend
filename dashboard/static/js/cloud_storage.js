@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             var newDiv = document.createElement('div');
             newDiv.className = 'fileItem'; 
+            newDiv.id = fileName;
             newDiv.innerHTML = '<p>'+fileName+'</p>' + 
                               '<div>' +
                               '<button class="download-btn" data-filename="'+fileName+'" data-shared="False" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;' +
@@ -79,6 +80,12 @@ document.addEventListener("DOMContentLoaded", function() {
                               '</div>';
 
             existingDiv.appendChild(newDiv);
+                      
+            var selectElement = document.getElementById('file-select');
+            var newOption = document.createElement('option');
+            newOption.value = fileName;
+            newOption.textContent = fileName; 
+            selectElement.appendChild(newOption);
 
         }
       });
@@ -126,6 +133,8 @@ document.addEventListener("DOMContentLoaded", function() {
       var csrftoken = getCookie('csrftoken');
     const formData = new FormData;
 
+    alert(filename);
+    alert(password);
     formData.append('file_name',filename)
     formData.append('password',password)
 
@@ -229,6 +238,7 @@ document.addEventListener("DOMContentLoaded", function() {
         },
         body: formData  
     };
+    const fileselectionValue = fileSelection.value;
     fetch(`/dashboard/share/`,options)
       .then((response) => response.json())
       .then((response) => { 
@@ -237,6 +247,41 @@ document.addEventListener("DOMContentLoaded", function() {
           msg.innerHTML = "File Shared !";
           msg.style.color = "green";
           msg.style.display = "block";
+
+          if (!file) {
+            SelectedFileDiv = document.getElementById(fileselectionValue);
+            SelectedFileDiv.remove();
+
+            var existingDiv = document.getElementById('fileList');
+
+            var newDiv = document.createElement('div');
+            newDiv.className = 'fileItem'; 
+            newDiv.id = fileselectionValue;
+            newDiv.innerHTML = '<p>'+fileselectionValue+'&emsp;(SHARED)</p>' + 
+                              '<div>' +
+                              '<button class="download-btn" data-filename="'+fileselectionValue+'" data-shared="True" data-sender="none" data-receiver="'+receiver+'" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;' +
+                              '<button class="download-btn" data-filename="'+fileselectionValue+'" data-shared="True" data-sender="none" data-receiver="'+receiver+'" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;' +
+                              '<button class="delete-btn" data-filename="'+fileselectionValue+'" onclick="deleteFile(this)">Delete</button>' +
+                              '</div>';
+  
+            existingDiv.appendChild(newDiv);
+          }
+          else {
+            var existingDiv = document.getElementById('fileList');
+
+            var newDiv = document.createElement('div');
+            newDiv.className = 'fileItem'; 
+            newDiv.id = file.name;
+            newDiv.innerHTML = '<p>'+file.name+'&emsp;(SHARED)</p>' + 
+                              '<div>' +
+                              '<button class="download-btn" data-filename="'+file.name+'" data-shared="True" data-sender="none" data-receiver="'+receiver+'" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;' +
+                              '<button class="download-btn" data-filename="'+file.name+'" data-shared="True" data-sender="none" data-receiver="'+receiver+'" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;' +
+                              '<button class="delete-btn" data-filename="'+file.name+'" onclick="deleteFile(this)">Delete</button>' +
+                              '</div>';
+  
+            existingDiv.appendChild(newDiv);
+          }
+
         }
       });
 
