@@ -73,3 +73,10 @@ def delete_file(request):
 @api_view(['GET'])
 def get_dht(request):
     return Response(DHT.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def fetchData(request):
+    key = request.GET.get('key')
+    if DHT.fetch_data(key):
+        return Response({"status":"ok"},status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_304_NOT_MODIFIED)

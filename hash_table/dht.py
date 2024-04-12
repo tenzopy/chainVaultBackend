@@ -2,6 +2,7 @@ import hashlib
 from blockchain.views import blockchain
 from django.conf import settings
 import requests
+import json
 
 ip = settings.ALLOWED_HOSTS[0]
 
@@ -267,4 +268,25 @@ class distributedHashTable:
         if self.does_user_exist(key):
             return self.data[key]
         return {}
+    
+    def fetch_data(self,key: str) -> bool:
+        blockchain.update_nodes()
+        network = blockchain.nodes
+        for node in network:
+            if node == settings.ALLOWED_HOSTS[0]:
+                continue
+            try:
+                params = {
+                    "key" : key,
+                }
+                response = requests.get(f'https://{node}/hashtable/get_userdata',params,timeout=2, verify='/etc/ssl/self-signed-ca-cert.crt')
+            except:
+                print(f"{node} is unavailable")
+                continue
+            if response.status_code == 200:
+                userdata = response.json()
+                for i in userdata.keys():
+                    if i not in self.data[key]:
+                        self.data[key][i] = userdata[i]
+        return True
 

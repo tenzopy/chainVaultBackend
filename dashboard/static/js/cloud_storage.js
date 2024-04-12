@@ -414,3 +414,22 @@ function fileInfo(buttonz) {
   const shared = buttonz.dataset.shared;
   fileInfoClick(filename, shared, sender, receiver);
 }
+
+function fetchData() {
+  var csrftoken = getCookie('csrftoken');
+  const options = {
+      credentials: 'include',
+      method: 'GET',
+      headers: {
+        'X-CSRFToken': csrftoken
+      },
+  };
+  fetch(`/hashtable/fetch_data`,options)
+    .then((response) => response.json())
+    .then((response) => { 
+      if (response.status == 'ok') {
+          alert("Fetch Completed");
+      }
+    });
+
+}
