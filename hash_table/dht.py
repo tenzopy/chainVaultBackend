@@ -157,6 +157,20 @@ class distributedHashTable:
         except:
             print("Successor or predecessor is unavailable")
 
+    def broadcast_filedata_deletion(self,key: str, file_name: str) -> None:
+        try:
+            json_data = {
+                "key" : key,
+                "file_name" : file_name,
+            }
+            url_successor = f"https://{self.successor}/hashtable/delete_file"  
+            requests.post(url_successor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt')  
+
+            url_predecessor = f"https://{self.predecessor}/hashtable/delete_file"  
+            requests.post(url_predecessor, json=json_data, timeout=3, verify='/etc/ssl/self-signed-ca-cert.crt') 
+        except:
+            print("Successor or predecessor is unavailable")
+
 
     def broadcast_userdata_updation(self,key: str,data: dict) -> None:
         try:
