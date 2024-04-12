@@ -277,5 +277,6 @@ def delete(request):
     if request.POST.get('file_name') != '':
         file_name = request.POST.get('file_name')
         DHT.remove_file(request.user.email,file_name)
+        DHT.broadcast_filedata_deletion(request.user.email,file_name)
         return Response({"status":"ok"},status=status.HTTP_200_OK)
     return Response(status=status.HTTP_400_BAD_REQUEST)

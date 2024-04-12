@@ -53,7 +53,7 @@ def update_userdata(request):
         return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_409_CONFLICT)
 
-@api_view(['DELETE'])
+@api_view(['POST'])
 def delete_user(request):
     data = request.data
     key = data['key']
@@ -61,7 +61,7 @@ def delete_user(request):
         return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['DELETE'])
+@api_view(['POST'])
 def delete_file(request):
     data = request.data
     key = data['key']
