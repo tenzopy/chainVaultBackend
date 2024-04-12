@@ -133,8 +133,6 @@ document.addEventListener("DOMContentLoaded", function() {
       var csrftoken = getCookie('csrftoken');
     const formData = new FormData;
 
-    alert(filename);
-    alert(password);
     formData.append('file_name',filename)
     formData.append('password',password)
 

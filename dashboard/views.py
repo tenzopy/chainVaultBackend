@@ -99,7 +99,11 @@ def download(request):
         block = blockchain.chain[block_index-1]
 
         # Calculate merkle hash
-        _merkle_input = merkle_input(request.user.email, file_name, file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
+        if bool(file_data["shared"]):
+            user = file_data["receiver"]
+        else:
+            user = request.user.email
+        _merkle_input = merkle_input(user, file_name, file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
 
