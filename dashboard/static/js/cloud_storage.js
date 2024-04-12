@@ -428,8 +428,11 @@ function fetchData() {
     .then((response) => response.json())
     .then((response) => { 
       if (response.status == 'ok') {
-          alert("Fetch Completed");
+          document.getElementById('fetchBtnRight').innerHTML = "Fetched Data";
+          location.reload();
       }
+      document.getElementById('fetchBtnRight').innerHTML = "Fetching..";
+      document.getElementById('fetchBtnRight').disabled = true;
     });
 
 }

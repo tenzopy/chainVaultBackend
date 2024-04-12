@@ -76,7 +76,7 @@ def get_dht(request):
 
 @api_view(['GET'])
 def fetchData(request):
-    key = request.GET.get('key')
+    key = request.user.email
     if DHT.fetch_data(key):
         return Response({"status":"ok"},status=status.HTTP_200_OK)
     return Response(status=status.HTTP_304_NOT_MODIFIED)
