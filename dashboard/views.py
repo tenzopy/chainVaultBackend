@@ -99,7 +99,7 @@ def download(request):
         block = blockchain.chain[block_index-1]
 
         # Calculate merkle hash
-        if bool(file_data["shared"]):
+        if file_data["shared"] == "True":
             user = file_data["receiver"]
         else:
             user = request.user.email
