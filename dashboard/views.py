@@ -114,8 +114,9 @@ def download(request):
         # Download from IPFS
         encrypted_file_name = randomName(6) + ".aes"
         cid = file_data["ipfs_cid"]
-        ipfs.download_from_ipfs(cid,encrypted_file_name)
-
+        if not ipfs.download_from_ipfs(cid,encrypted_file_name):
+            return Response({"status": "File Not Found!",},status=status.HTTP_200_OK)
+        
         # Calculate Encrypted Checksum
         encrypted_file_path = os.path.join(settings.MEDIA_ROOT, encrypted_file_name)
         encrypted_checksum = cal_checksum(encrypted_file_path)

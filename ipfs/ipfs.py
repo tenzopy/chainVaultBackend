@@ -12,7 +12,7 @@ class IPFS:
         self.ip = ip
         self.port = port
         try:
-            self.client = _ipfs.connect(f'/{self.protocol}/{self.ip}/tcp/{self.port}')
+            self.client = _ipfs.connect(f'/{self.protocol}/{self.ip}/tcp/{self.port}',timeout=20)
         except:
             print("IPFS daemon is not running!")
             exit()
@@ -28,8 +28,9 @@ class IPFS:
         try:
             self.client.get(cid = cid,target = MEDIA_ROOT)
             os.rename(os.path.join(MEDIA_ROOT,cid),os.path.join(MEDIA_ROOT,file_name))
+            return True
         except _ipfs.exceptions.StatusError as e:
-            print("Error: ", e)
+            return False
     
     def cache_file(self,cid: str) -> bool:
         self.client.cat(cid = cid)
