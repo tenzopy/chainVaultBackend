@@ -115,6 +115,24 @@ def download(request):
         encrypted_file_name = randomName(6) + ".aes"
         cid = file_data["ipfs_cid"]
         if not ipfs.download_from_ipfs(cid,encrypted_file_name):
+            # Send E-Mail with password to receiver   
+            Subject = "ChainVault, Your file is no longer available. "
+            HTML_Message = render_to_string('email_not_found.html', {
+
+            'file_name' : file_name,
+            'sender' : file_data["sender"], 
+
+            })
+
+            Plain_Message = render_to_string('email_not_found_plain.html', {
+
+            'file_name' : file_name,
+            'sender' : file_data["sender"], 
+
+            })
+
+            send_mail(Subject, Plain_Message, from_email="noreply@sliceit.me", recipient_list=[file_data["sender"]], html_message=HTML_Message, fail_silently=True)
+
             return Response({"status": "File Not Found!",},status=status.HTTP_200_OK)
         
         # Calculate Encrypted Checksum
