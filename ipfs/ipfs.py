@@ -29,7 +29,7 @@ class IPFS:
             self.client.get(cid = cid,target = MEDIA_ROOT)
             os.rename(os.path.join(MEDIA_ROOT,cid),os.path.join(MEDIA_ROOT,file_name))
             return True
-        except _ipfs.exceptions.StatusError as e:
+        except _ipfs.exceptions.TimeoutError as e:
             return False
     
     def cache_file(self,cid: str) -> bool:
