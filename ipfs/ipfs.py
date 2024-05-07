@@ -25,8 +25,11 @@ class IPFS:
         return file_hash
     
     def download_from_ipfs(self, cid: str,file_name: str) -> None:
-        self.client.get(cid = cid,target = MEDIA_ROOT)
-        os.rename(os.path.join(MEDIA_ROOT,cid),os.path.join(MEDIA_ROOT,file_name))
+        try:
+            self.client.get(cid = cid,target = MEDIA_ROOT)
+            os.rename(os.path.join(MEDIA_ROOT,cid),os.path.join(MEDIA_ROOT,file_name))
+        except _ipfs.exceptions.StatusError as e:
+            print("Error: ", e)
     
     def cache_file(self,cid: str) -> bool:
         self.client.cat(cid = cid)
