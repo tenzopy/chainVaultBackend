@@ -23,12 +23,15 @@ def cal_checksum(file_path: str) -> str:
     return hash_sha256.hexdigest()
 
 
-def merkle_input(key: str, file_name: str, shared: str, sender: str, receiver: str, checksum: str, encrypted_checksum: str, ipfs_cid: str):
-    return [key, file_name, shared, sender, receiver, checksum, encrypted_checksum, ipfs_cid]
+def merkle_input(key: str, file_name: str, fileSize: int, fileCreated: float, fileType: str, shared: str, sender: str, receiver: str, checksum: str, encrypted_checksum: str, ipfs_cid: str):
+    return [key, file_name, str(fileSize), str(fileCreated), fileType, shared, sender, receiver, checksum, encrypted_checksum, ipfs_cid]
 
-def hashTableDataDict(block_index: int, shared: str, sender: str, receiver: str, checksum: str, encrypted_checksum: str, ipfs_cid: str) -> dict:
+def hashTableDataDict(block_index: int, fileSize: int, fileCreated: float, fileType: str, shared: str, sender: str, receiver: str, checksum: str, encrypted_checksum: str, ipfs_cid: str) -> dict:
     return {
         "block_index" : block_index,
+        "file_size" : fileSize,
+        "file_created" : fileCreated,
+        "file_type" : fileType,
         "shared" : shared,
         "sender" : sender,
         "receiver" : receiver,

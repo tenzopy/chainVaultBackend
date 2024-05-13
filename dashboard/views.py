@@ -15,6 +15,8 @@ from .assets import *
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from datetime import datetime
+import magic
 
 
 fs = FileSystemStorage()
@@ -49,6 +51,11 @@ def upload(request):
         file_path = os.path.join(settings.MEDIA_ROOT,filename)
         checksum = cal_checksum(file_path)
 
+        #Calculate File Info
+        fileSize = os.stat(file_path).st_size
+        fileCreated = datetime.now().timestamp() * 1000
+        fileType = magic.from_file(file_path, mime = True)
+
         # AES Encryption
         encrypted_file_path = os.path.join(settings.MEDIA_ROOT, randomName(6) + ".aes")
         pyAesCrypt.encryptFile(file_path, encrypted_file_path, password)
@@ -60,7 +67,7 @@ def upload(request):
         ipfs_cid = ipfs.upload_to_ipfs(encrypted_file_path)
 
         # Calculate merkle hash
-        _merkle_input = merkle_input(request.user.email, uploadFile.name, 'False', '', '', checksum, encrypted_checksum, ipfs_cid)
+        _merkle_input = merkle_input(request.user.email, uploadFile.name, fileSize, fileCreated, fileType, 'False', '', '', checksum, encrypted_checksum, ipfs_cid)
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
         
@@ -68,7 +75,7 @@ def upload(request):
         block = blockchain.mine_block({"merkle_hash" : merkle_hash})
 
         # Add to Distributed Hash Table
-        DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], 'False', '', '', checksum, encrypted_checksum, ipfs_cid))
+        DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], fileSize, fileCreated, fileType, 'False', '', '', checksum, encrypted_checksum, ipfs_cid))
 
         # Cache to Nearby IPFS
         ipfs.broadcast_file(ipfs_cid)
@@ -77,7 +84,12 @@ def upload(request):
         os.remove(file_path)
         os.remove(encrypted_file_path)
 
-        return Response({"status" : "ok"},status=status.HTTP_200_OK)
+        return Response({
+            "status" : "ok",
+            "file_size" : fileSize,
+            "file_created" : fileCreated,
+            "file_type" : fileType,
+        },status=status.HTTP_200_OK)
     
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -103,7 +115,7 @@ def download(request):
             user = file_data["receiver"]
         else:
             user = request.user.email
-        _merkle_input = merkle_input(user, file_name, file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
+        _merkle_input = merkle_input(user, file_name, file_data["file_size"], file_data["file_created"], file_data["file_type"], file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
 
@@ -187,6 +199,11 @@ def share(request):
             file_path = os.path.join(settings.MEDIA_ROOT,filename)
             checksum = cal_checksum(file_path)
 
+            #Calculate File Info
+            fileSize = os.stat(file_path).st_size
+            fileCreated = datetime.now().timestamp() * 1000
+            fileType = magic.from_file(file_path, mime = True)
+
             # AES Encryption
             encrypted_file_path = os.path.join(settings.MEDIA_ROOT, randomName(6) + ".aes")
             pyAesCrypt.encryptFile(file_path, encrypted_file_path, password)
@@ -198,7 +215,7 @@ def share(request):
             ipfs_cid = ipfs.upload_to_ipfs(encrypted_file_path)
 
             # Calculate merkle hash
-            _merkle_input = merkle_input(request.user.email, uploadFile.name, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid)
+            _merkle_input = merkle_input(request.user.email, uploadFile.name, fileSize, fileCreated, fileType, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid)
             merkle_tree.makeTreeFromArray(_merkle_input)
             merkle_hash = merkle_tree.calculateMerkleRoot()
             
@@ -206,7 +223,7 @@ def share(request):
             block = blockchain.mine_block({"merkle_hash" : merkle_hash})
 
             # Add to Distributed Hash Table
-            DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], 'True', request.user.email, request.POST.get('receiver'), checksum, encrypted_checksum, ipfs_cid))
+            DHT.store_file(request.user.email, uploadFile.name, hashTableDataDict(block['index'], fileSize, fileCreated, fileType, 'True', request.user.email, request.POST.get('receiver'), checksum, encrypted_checksum, ipfs_cid))
 
             # Cache to Nearby IPFS
             ipfs.broadcast_file(ipfs_cid)
@@ -232,7 +249,7 @@ def share(request):
         block = blockchain.chain[block_index-1]
 
         # Calculate merkle hash
-        _merkle_input = merkle_input(sender, file_name, file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
+        _merkle_input = merkle_input(sender, file_name, file_data["file_size"], file_data["file_created"], file_data["file_type"], file_data["shared"], file_data["sender"], file_data["receiver"], file_data["checksum"], file_data["encrypted_checksum"], file_data["ipfs_cid"])
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
 
@@ -244,9 +261,12 @@ def share(request):
         ipfs_cid = file_data['ipfs_cid']
         checksum = file_data['checksum']
         encrypted_checksum = file_data['encrypted_checksum']
+        fileSize = file_data["file_size"]
+        fileCreated = file_data["file_created"]
+        fileType = file_data["file_type"]
 
         # Calculate merkle hash
-        _merkle_input = merkle_input(receiver, file_name, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid)
+        _merkle_input = merkle_input(receiver, file_name, fileSize, fileCreated, fileType, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid)
         merkle_tree.makeTreeFromArray(_merkle_input)
         merkle_hash = merkle_tree.calculateMerkleRoot()
         
@@ -254,10 +274,10 @@ def share(request):
         block = blockchain.mine_block({"merkle_hash" : merkle_hash})
 
         # Add to Distributed Hash Table (Receiver)
-        DHT.store_file(receiver, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
+        DHT.store_file(receiver, file_name, hashTableDataDict(block['index'], fileSize, fileCreated, fileType, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
 
         # Update Distributed Hash Table (Sender)
-        DHT.update_file(sender, file_name, hashTableDataDict(block['index'], 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
+        DHT.update_file(sender, file_name, hashTableDataDict(block['index'], fileSize, fileCreated, fileType, 'True', sender, receiver, checksum, encrypted_checksum, ipfs_cid))
 
         # Cache to Nearby IPFS
         ipfs.broadcast_file(ipfs_cid)
