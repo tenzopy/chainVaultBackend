@@ -39,3 +39,16 @@ def hashTableDataDict(block_index: int, fileSize: int, fileCreated: float, fileT
         "encrypted_checksum" : encrypted_checksum,
         "ipfs_cid" : ipfs_cid,
     }
+
+def format_bytes(bytes, decimals=2):
+    if bytes == 0:
+        return "0 Bytes"
+
+    k = 1024
+    sizes = ["Bytes", "KB", "MB", "GB"]
+    i = 0
+    while bytes >= k and i < len(sizes) - 1:
+        bytes /= k
+        i += 1
+
+    return f"{bytes:.{decimals}f} {sizes[i]}"

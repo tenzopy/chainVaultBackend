@@ -33,8 +33,12 @@ def cloud(request):
     blockchain.replace_chain()
     if user_data == {} and DHT.request_user_from_neighbours(request.user.email):
         user_data = DHT.retrieve_user(request.user.email)
+    File_size = 0
+    for key,values in user_data.items():
+        File_size+=int(values['file_size'])
     context = {
-        "file" : user_data
+        "file" : user_data,
+        "File_size" : format_bytes(File_size),
     }
     return render(request, 'cloud_storage.html', context)
 
