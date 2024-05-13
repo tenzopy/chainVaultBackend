@@ -257,7 +257,7 @@ function handleShare() {
           newDiv.id = fileselectionValue;
           newDiv.innerHTML = '<p>' + fileselectionValue + '&emsp;(SHARED)</p>' +
             '<div>' +
-            '<button class="download-btn" data-filename="' + fileselectionValue + '" data-shared="True" data-sender="none" data-receiver="' + receiver + '" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;' +
+            '<button class="download-btn" data-filename="' + fileselectionValue + '" data-filesize="' + response.file_size + '" data-filecreated="' + response.file_created + '" data-filetype="' + response.file_type + '" data-shared="True" data-sender="none" data-receiver="' + receiver + '" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;' +
             '<button class="download-btn" data-filename="' + fileselectionValue + '" data-shared="True" data-sender="none" data-receiver="' + receiver + '" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;' +
             '<button class="delete-btn" data-filename="' + fileselectionValue + '" onclick="deleteFile(this)">Delete</button>' +
             '</div>';
@@ -272,7 +272,7 @@ function handleShare() {
           newDiv.id = file.name;
           newDiv.innerHTML = '<p>' + file.name + '&emsp;(SHARED)</p>' +
             '<div>' +
-            '<button class="download-btn" data-filename="' + file.name + '" data-shared="True" data-sender="none" data-receiver="' + receiver + '" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;' +
+            '<button class="download-btn" data-filename="' + file.name + '" data-filesize="' + response.file_size + '" data-filecreated="' + response.file_created + '" data-filetype="' + response.file_type + '" data-shared="True" data-sender="none" data-receiver="' + receiver + '" onclick="fileInfo(this)">Info</button>&nbsp;&nbsp;' +
             '<button class="download-btn" data-filename="' + file.name + '" data-shared="True" data-sender="none" data-receiver="' + receiver + '" onclick="Downloadz(this)">Download</button>&nbsp;&nbsp;' +
             '<button class="delete-btn" data-filename="' + file.name + '" onclick="deleteFile(this)">Delete</button>' +
             '</div>';

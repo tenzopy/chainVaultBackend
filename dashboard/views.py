@@ -305,7 +305,12 @@ def share(request):
         send_mail(Subject, Plain_Message, from_email="noreply@sliceit.me", recipient_list=[receiver], html_message=HTML_Message, fail_silently=True)
 
 
-        return Response({"status":"ok"},status=status.HTTP_200_OK)
+        return Response({
+            "status" : "ok",
+            "file_size" : fileSize,
+            "file_created" : fileCreated,
+            "file_type" : fileType,
+        },status=status.HTTP_200_OK)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
