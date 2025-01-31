@@ -11,7 +11,7 @@ django-rest-framework==0.1.0
 djangorestframework==3.14.0
 gunicorn==21.2.0
 idna==3.6
-ipfshttpclient==0.4.13
+ipfshttpclient==0.4.13.2
 multiaddr==0.0.9
 netaddr==1.2.1
 oauthlib==3.2.2

@@ -3,8 +3,11 @@ from django.conf import settings
 import os
 from hash_table.views import DHT
 import requests
+import shutil
+from pathlib import Path
 
 MEDIA_ROOT = settings.MEDIA_ROOT
+BASE_DIR = settings.BASE_DIR
 
 class IPFS:
     def __init__(self, protocol: str, ip: str, port: int) -> None:
@@ -26,8 +29,8 @@ class IPFS:
     
     def download_from_ipfs(self, cid: str,file_name: str) -> None:
         try:
-            self.client.get(cid = cid,target = MEDIA_ROOT)
-            os.rename(os.path.join(MEDIA_ROOT,cid),os.path.join(MEDIA_ROOT,file_name))
+            self.client.get(cid = cid)
+            shutil.move(BASE_DIR / cid,MEDIA_ROOT+'/'+file_name)
             return True
         except _ipfs.exceptions.TimeoutError as e:
             return False
